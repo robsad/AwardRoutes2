@@ -43,7 +43,7 @@ public class ScrollingActivity extends AppCompatActivity {
         container = containerManager.addCountainer(countainerSize);
 
         formChoosen = container.getFormChoosen();
-        formPossibles = container.setRouteLines(formChoosen);
+        formPossibles = container.calculateRoutes(formChoosen);
         airportList = new ArrayList<String>(formChoosen.getAirportList());
         listView = (ListView) findViewById(R.id.listViewMain);
         adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);
@@ -88,9 +88,10 @@ public class ScrollingActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String getAirport = intent.getStringExtra("Choosen Airport");
-                int pos = intent.getIntExtra("Pos",0);
+                int pos = intent.getIntExtra("Position",0);
+                System.out.println("Pos: " + pos + "Choosen Airport" + getAirport);
                 formChoosen.setAirport(pos,getAirport);
-                formPossibles = container.setRouteLines(formChoosen);
+                formPossibles = container.calculateRoutes(formChoosen);
                 airportList = new ArrayList<String>(formChoosen.getAirportList());
                 adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);
                 listView.setAdapter(adapter);

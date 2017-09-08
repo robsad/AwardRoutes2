@@ -1,26 +1,29 @@
 package pl.robertsadlowski.awardroutes.app.gateaway;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.Set;
+		import java.util.TreeSet;
 
 public class FormPossibles {
 
 	private final int size;
 	private List<Set<String>> possiblePorts = new ArrayList<>();
 	private List<Set<String>> possibleCountries = new ArrayList<>();
-	private List<List<String>> possibleZones = new ArrayList<>();
+	private List<Set<String>> possibleZones = new ArrayList<>();
 	private int mileageNeeded;
-	
+	private String zoneStart;
+	private String zoneEnd;
+
 	public FormPossibles(int size) {
 		this.size=size;
 		for(int i=0 ; i < size; i++ ) {
 			possiblePorts.add(new TreeSet<String>());
 			possibleCountries.add(new TreeSet<String>());
+			possibleZones.add(new TreeSet<String>());
 		}
 	}
-	
+
 	public void setAirports(int i, Set<String> airports) {
 		possiblePorts.set(i, airports);
 	}
@@ -28,7 +31,7 @@ public class FormPossibles {
 	public Set<String> getAirports(int i) {
 		return possiblePorts.get(i);
 	}
-	
+
 	public void setCountries(int i, Set<String> countries) {
 		possibleCountries.set(i, countries);
 	}
@@ -36,12 +39,12 @@ public class FormPossibles {
 	public Set<String> getCountries(int i) {
 		return possibleCountries.get(i);
 	}
-	
-	public void setZones(int i, List<String> zones) {
+
+	public void setZones(int i, Set<String> zones) {
 		possibleZones.set(i, zones);
 	}
 
-	public List<String> getZones(int i) {
+	public Set<String> getZones(int i) {
 		return possibleZones.get(i);
 	}
 
@@ -49,9 +52,12 @@ public class FormPossibles {
 
 	public int getMileageNeeded() { return mileageNeeded;}
 
-	@Override
 	public String toString() {
-		return possiblePorts.toString();
+		return possiblePorts.toString()
+				+ "\n" + possibleCountries.toString()
+				+ "\n" + possibleZones.toString()
+				+ "\n Mileage:" + getMileageNeeded();
 	}
 }
+
 

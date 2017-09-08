@@ -7,4 +7,6 @@ import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 
 public interface IZoneFilter {
 	List<Set<String>> calculateZones(FormChoosen formChoosen);
+    String getStartZone();
+    String getEndZone();
 }

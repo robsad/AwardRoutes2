@@ -12,7 +12,8 @@ import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormPossibles;
 
 public class Container  {
-	
+
+	static final String ALL = "All";
 	private List<RouteLine> routeLines = new ArrayList<>();
 	private IRulesModule rulesModule;
 	private Airports airports;
@@ -28,40 +29,60 @@ public class Container  {
 		return new FormChoosen(size);
 	}
 
-	public FormPossibles setRouteLines(FormChoosen formChoosen) {
+	public FormPossibles calculateRoutes(FormChoosen formChoosen) {
 		routeLines.clear();
 		IZoneFilter zonefilter = rulesModule.getZoneFilterInstance();
-		List<Set<String>> zoneCalculation = zonefilter.calculateZones(formChoosen);
-		formChoosen.setZoneCalculation(zoneCalculation);
-		for(int i=0 ; i < size; i++ ) {
-			routeLines.add(new RouteLine(size,i,formChoosen,rulesModule));
-		}
-		return recalculate();
+		List<Set<String>> zoneCalculated = zonefilter
+				.calculateZones(formChoosen);
+		System.out.println(zoneCalculated);
+		formChoosen.setZoneCalculation(zoneCalculated);
+		setRouteLines(formChoosen);
+		FormPossibles formPossibles = calculateRoutesIntersections();
+		int mileageNeeded = rulesModule.getMilesNeeded(
+				zonefilter.getStartZone(), zonefilter.getEndZone());
+		formPossibles.setMileageNeeded(mileageNeeded);
+		return formPossibles;
 	}
-	
-	private FormPossibles recalculate() {
+
+	private void setRouteLines(FormChoosen formChoosen) {
+		for (int i = 0; i < size; i++) {
+			routeLines.add(new RouteLine(size, i, formChoosen, rulesModule));
+		}
+	}
+
+	private FormPossibles calculateRoutesIntersections() {
 		FormPossibles formPossibles = new FormPossibles(size);
-		for(int i=0 ; i < size; i++ ) {
-			formPossibles.setAirports(i, intersection(i));
-			System.out.println("nr: "+i+" inter: "+formPossibles.getAirports(i));
-			formPossibles.setCountries(i, calculatePossibleCountry(i, intersection(i)));
+		for (int i = 0; i < size; i++) {
+			Set<String> intersection = intersection(i);
+			formPossibles.setAirports(i, intersection);
+			Set<String> possibleCoutries = calculatePossibleCountry(intersection);
+			formPossibles.setCountries(i, possibleCoutries);
+			formPossibles.setZones(i, calculatePossibleZones(possibleCoutries));
 		}
 		return formPossibles;
 	}
 
-	private Set<String> calculatePossibleCountry(int i, Set<String> possiblePorts) {
+	private Set<String> calculatePossibleCountry(Set<String> possiblePorts) {
 		Set<String> possibleCountries = new TreeSet<String>();
-		for(String port : possiblePorts) {
-			if (port.equals("All")) {
-				possibleCountries.add("All");
+		for (String port : possiblePorts) {
+			if (port.equals(ALL)) {
+				possibleCountries.add(ALL);
 			} else {
 				possibleCountries.add(airports.getAirportsCountryName(port));
 			}
 		}
 		if (possibleCountries.isEmpty()) {
-			possibleCountries.add("All");
+			possibleCountries.add(ALL);
 		}
 		return possibleCountries;
+	}
+
+	private Set<String> calculatePossibleZones(Set<String> possibleCoutries) {
+		Set<String> possibleZones = new TreeSet<String>();
+		for (String country : possibleCoutries) {
+			possibleZones.add(rulesModule.getCountryNameZone(country));
+		}
+		return possibleZones;
 	}
 	
 	private Set<String> intersection(int i) {
@@ -69,7 +90,6 @@ public class Container  {
 		for(int j=0 ; j < size; j++ ) {
 			RouteLine routeLine = routeLines.get(j);
 			Set<String> routeStop = routeLine.getRouteLineStop(i);
-			System.out.println("nr: "+i+" route(j): "+j+" routestop: "+routeStop);   //komentarz
 			if (!routeStop.isEmpty()) {
 				if (intersection.isEmpty()) {
 					intersection=routeStop; 
@@ -80,7 +100,6 @@ public class Container  {
 		}
 		if (intersection.isEmpty()) {
 			intersection.addAll(airports.getAllAirportNames());
-			//intersection.add("All");
 		}
 		return intersection;
 	}

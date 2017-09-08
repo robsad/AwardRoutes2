@@ -16,4 +16,5 @@ public interface IRulesModule {
 	String getCountryZone(String countryCode);
 	Airports getAirports();
 	IZoneFilter getZoneFilterInstance();
+    String getCountryNameZone(String country);
 }

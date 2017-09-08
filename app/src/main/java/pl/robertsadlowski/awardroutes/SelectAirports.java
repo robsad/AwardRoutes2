@@ -27,7 +27,7 @@ public class SelectAirports extends AppCompatActivity {
 
         Intent intent = getIntent();
         airportList = intent.getStringArrayListExtra("AirportList");
-        position = intent.getIntExtra("Pos",0);
+        position = intent.getIntExtra("Position",0);
 
         listView = (ListView) findViewById(R.id.listViewAirports);
         adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);
@@ -41,7 +41,7 @@ public class SelectAirports extends AppCompatActivity {
                 {
                     Intent intent = new Intent();
                     intent.putExtra("Choosen Airport", airportList.get(pos));
-                    intent.putExtra("Pos", position);
+                    intent.putExtra("Position", position);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
