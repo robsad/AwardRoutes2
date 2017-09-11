@@ -1,6 +1,5 @@
 package pl.robertsadlowski.awardroutes.app.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +32,9 @@ public class Airports {
 		return countries;
 	}
 
-	public Set<String> getAirportsByCountry(String country) {
+	public Set<String> getAirportsByCountryName(String country) {
+		System.out.println("country: " +  country);
+		System.out.println("return " + namesByCountry.get(country));
 		return namesByCountry.get(country);
 	}
 
@@ -84,7 +85,7 @@ public class Airports {
 		}
 		if (airportsByCountry.containsKey(countryKey)) {
 			airportByCountry = airportsByCountry.get(countryKey);
-			nameByCountry = namesByCountry.get(countryKey);
+			nameByCountry = namesByCountry.get(countryByCode.get(countryKey));
 		} else {
 			airportByCountry = new LinkedList<>();
 			nameByCountry = new TreeSet<>();
@@ -92,7 +93,7 @@ public class Airports {
 		airportByCountry.add(airport);
 		airportsByCountry.put(countryKey, airportByCountry);
 		nameByCountry.add(airport.getCityName());
-		namesByCountry.put(countryKey, nameByCountry);
+		namesByCountry.put(countryByCode.get(countryKey), nameByCountry);
 	}
 
 	private boolean isHawaii(AirportsData airport) {

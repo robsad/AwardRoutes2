@@ -1,27 +1,39 @@
-package pl.robertsadlowski.awardroutes;
+package pl.robertsadlowski.awardroutes.view.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import pl.robertsadlowski.awardroutes.R;
 import pl.robertsadlowski.awardroutes.app.Application;
+import pl.robertsadlowski.awardroutes.app.gateaway.FormAirportData;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormPossibles;
 import pl.robertsadlowski.awardroutes.app.logic.Container;
 import pl.robertsadlowski.awardroutes.app.logic.ContainerManager;
+import pl.robertsadlowski.awardroutes.view.adapters.CustomMainListAdapter;
 
 public class ScrollingActivity extends AppCompatActivity {
 
     private ListView listView;
+    private Button buttonZoneStart;
+    private Button buttonZoneEnd;
+    private TextView textZoneStart;
+    private TextView textZoneEnd;
+    private TextView textMileage;
+
     private ArrayAdapter<String> adapter;
     ArrayList<String> airportList;
     private Container container;
@@ -44,58 +56,93 @@ public class ScrollingActivity extends AppCompatActivity {
 
         formChoosen = container.getFormChoosen();
         formPossibles = container.calculateRoutes(formChoosen);
-        airportList = new ArrayList<String>(formChoosen.getAirportList());
+
         listView = (ListView) findViewById(R.id.listViewMain);
-        adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);
+        //adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);  //simple adapter
+        ArrayList<FormAirportData> arrayOfUsers = new ArrayList<FormAirportData>(formChoosen.getRouteDataList());
+        CustomMainListAdapter adapter = new CustomMainListAdapter(this, arrayOfUsers, formPossibles);
         listView.setAdapter(adapter);
 
+/*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
                                     long arg3) {
-                if(pos > -1)
+                if(pos < 4)
                 {
                     Intent intent = new Intent(ScrollingActivity.this, SelectAirports.class);
                     ArrayList<String> airportList = new ArrayList<String>(formPossibles.getAirports(pos));
                     airportList.add(0,"All");
-                    intent.putStringArrayListExtra("AirportList", airportList);
+                    intent.putExtra("Type","Airport City");
+                    intent.putStringArrayListExtra("List", airportList);
                     intent.putExtra("Position",pos);
                     startActivityForResult(intent,REQEST_CODE);
                 }
             }
         });
-
-
-        //mList = getListData();
-        //MyAdapter listAdapter = new MyAdapter(this, R.layout.row, mList);
-
-
-/*
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(getApplicationContext(),
-                        "Click ListItem Number " + position, Toast.LENGTH_LONG)
-                        .show();
-            }
-        });
 */
+
+        buttonZoneStart = (Button) findViewById(R.id.zoneStart);
+        buttonZoneEnd  = (Button) findViewById(R.id.zoneEnd);
+        textZoneStart = (TextView) findViewById(R.id.textZoneStart);
+        textZoneEnd = (TextView) findViewById(R.id.textZoneEnd);
+        textMileage = (TextView) findViewById(R.id.textMileage);
+        buttonZoneStart.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View arg0) {
+                openButtonDialog();
+            }});
+
+    }
+
+
+    private void openButtonDialog(){
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(ScrollingActivity.this);
+        myDialog.setTitle("Choose Zone");
+        final String[] targetArray = formPossibles.getZones(0).toArray(new String[formPossibles.getZones(0).size()]);
+        myDialog.setItems(targetArray, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String item = targetArray[which];
+                buttonZoneStart.setText(item);
+            }});
+        myDialog.setNegativeButton("Cancel", null);
+        myDialog.show();
     }
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        System.out.println("requestCode: " + requestCode + " resultCode " + resultCode);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                String getAirport = intent.getStringExtra("Choosen Airport");
+                String getAirport = intent.getStringExtra("Choosen");
                 int pos = intent.getIntExtra("Position",0);
-                System.out.println("Pos: " + pos + "Choosen Airport" + getAirport);
-                formChoosen.setAirport(pos,getAirport);
+                String type = intent.getStringExtra("Type");
+                System.out.println("Return type: " + type + " getAirport " + getAirport);
+                if (type.equals("Airport City")) {
+                    formChoosen.setAirport(pos,getAirport);
+                } else {
+                    System.out.println("getCountry i: " + pos);
+                    formChoosen.setCountry(pos,getAirport);
+                }
                 formPossibles = container.calculateRoutes(formChoosen);
-                airportList = new ArrayList<String>(formChoosen.getAirportList());
-                adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);
-                listView.setAdapter(adapter);
-            }}};
+                formsUpdate();
+            }
+        }
+    };
+
+    private void formsUpdate() {
+        ArrayList<FormAirportData> arrayOfUsers = new ArrayList<FormAirportData>(formChoosen.getRouteDataList());
+        CustomMainListAdapter adapter = new CustomMainListAdapter(this, arrayOfUsers, formPossibles);
+        listView.setAdapter(adapter);
+        updateMileage();
+    }
+
+    private void updateMileage() {
+        textZoneStart.setText(formPossibles.getZoneStart());
+        textZoneEnd.setText(formPossibles.getZoneEnd());
+        textMileage.setText(String.valueOf(formPossibles.getMileageNeeded())+"miles");
+    }
 
 
     @Override

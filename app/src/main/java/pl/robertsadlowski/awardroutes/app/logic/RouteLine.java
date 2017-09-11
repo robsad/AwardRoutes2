@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 import pl.robertsadlowski.awardroutes.app.data.Airports;
+import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 
@@ -41,6 +41,7 @@ public class RouteLine {
 			routeLineList.add(new TreeSet<String>());
 		}
 		Set<String> initAirportNames = getInitAirports();
+		System.out.println("initAirportNames: " + initAirportNames);
 		if (!initAirportNames.isEmpty()) {
 			calculate(initAirportNames);
 		}
@@ -103,13 +104,17 @@ public class RouteLine {
 		Set<String> initAirports = new TreeSet<>();
 		if (!choosenAirport.equals("All")) {
 			initAirports.add(choosenAirport);
+			System.out.println("choosenAirport " + choosenAirport);
 			return initAirports;
 		}
 		String choosenCountry = formChoosen.getCountry(routeNr);
 		if (!choosenCountry.equals("All")) {
-			return airports.getAirportsByCountry(choosenCountry);
+			System.out.println("choosenCountry " + choosenCountry);
+			System.out.println("choosenAirports " + airports.getAirportsByCountryName(choosenCountry));
+			return airports.getAirportsByCountryName(choosenCountry);
 		}
-		return Collections.emptySet();
+		System.out.println("emptyset -> choosenAirport " + choosenAirport);
+		return Collections.<String>emptySet();
 	}
 
 	@Override

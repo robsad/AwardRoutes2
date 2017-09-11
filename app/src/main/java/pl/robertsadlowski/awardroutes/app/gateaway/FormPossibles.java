@@ -24,6 +24,22 @@ public class FormPossibles {
 		}
 	}
 
+	public void setZoneStart(String zoneStart) {
+		this.zoneStart = zoneStart;
+	}
+
+	public String getZoneStart() {
+		return zoneStart;
+	}
+
+	public void setZoneEnd(String zoneEnd) {
+		this.zoneEnd = zoneEnd;
+	}
+
+	public String getZoneEnd() {
+		return zoneEnd;
+	}
+
 	public void setAirports(int i, Set<String> airports) {
 		possiblePorts.set(i, airports);
 	}
@@ -56,6 +72,7 @@ public class FormPossibles {
 		return possiblePorts.toString()
 				+ "\n" + possibleCountries.toString()
 				+ "\n" + possibleZones.toString()
+				+ "\n" + "Start:" + zoneStart + " End:" + zoneEnd
 				+ "\n Mileage:" + getMileageNeeded();
 	}
 }

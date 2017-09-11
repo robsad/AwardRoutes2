@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="pl.robertsadlowski.awardroutes.ScrollingActivity">
+    tools:context="pl.robertsadlowski.awardroutes.view.activities.ScrollingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,28 +22,28 @@
             android:padding="5dp">
 
             <Button
-                android:id="@+id/countryID"
+                android:id="@+id/zoneStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:padding="2dp"
-                android:text="Poland" />
+                android:text="Select Start Zone" />
 
             <Button
-                android:id="@+id/cityID"
+                android:id="@+id/zoneEnd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:padding="2dp"
-                android:text="Poznan" />
+                android:text="Select End Zone" />
         </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="294dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             tools:context=".List">
 
@@ -52,6 +52,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"></ListView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textZoneStart"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textMileage"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textZoneEnd"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_weight="1" />
+
 
         </LinearLayout>
 

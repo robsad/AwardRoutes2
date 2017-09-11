@@ -48,6 +48,7 @@ public class MMZoneFilter implements IZoneFilter {
 		String zoneEnd = ALL;
 		for (int i = 0; i < size; i++) {
 			String zoneNow = whatZone(i);
+			System.out.println("ZoneNow: " +  zoneNow);
 			if ((!zoneNow.equals(ALL)) && (!zoneNow.equals(zoneLast))) {
 				zoneLast = zoneNow;
 				numberOfZones++;
@@ -78,14 +79,15 @@ public class MMZoneFilter implements IZoneFilter {
 	}
 
 	private String whatZone(int i) {
-
 		if ((i == 0) && (!startZone.equals(ALL)))
 			return startZone;
 		if ((i == size-1) && (!endZone.equals(ALL)))
 			return endZone;
-		String countryCode = formChoosen.getCountry(i);
-		if (!countryCode.equals(ALL)) {
-			return rulesModule.getCountryZone(countryCode);
+		String countryName = formChoosen.getCountry(i);
+		System.out.println("i= " + i + " country= " +countryName);  //comment
+		if (!countryName.equals(ALL)) {
+			System.out.println("rulesModule.getCountryZone(country) = " + rulesModule.getCountryNameZone(countryName)); //comment
+			return rulesModule.getCountryNameZone(countryName);
 		}
 		String airportName = formChoosen.getAirport(i);
 		if (!airportName.equals(ALL)) {

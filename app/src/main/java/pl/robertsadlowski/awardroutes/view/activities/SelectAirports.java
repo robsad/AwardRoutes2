@@ -1,9 +1,8 @@
-package pl.robertsadlowski.awardroutes;
+package pl.robertsadlowski.awardroutes.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,12 +10,15 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import pl.robertsadlowski.awardroutes.R;
+
 public class SelectAirports extends AppCompatActivity {
 
     private ListView listView ;
     private ArrayAdapter<String> adapter ;
     private ArrayList<String> airportList;
     private int position;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,8 @@ public class SelectAirports extends AppCompatActivity {
         //setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        airportList = intent.getStringArrayListExtra("AirportList");
+        type = intent.getStringExtra("Type");
+        airportList = intent.getStringArrayListExtra("List");
         position = intent.getIntExtra("Position",0);
 
         listView = (ListView) findViewById(R.id.listViewAirports);
@@ -40,8 +43,9 @@ public class SelectAirports extends AppCompatActivity {
                 if(pos > -1)
                 {
                     Intent intent = new Intent();
-                    intent.putExtra("Choosen Airport", airportList.get(pos));
+                    intent.putExtra("Choosen", airportList.get(pos));
                     intent.putExtra("Position", position);
+                    intent.putExtra("Type", type);
                     setResult(RESULT_OK, intent);
                     finish();
                 }

@@ -53,6 +53,18 @@ public class FormChoosen {
 	public List<String> getAirportList() {
 		return choosenAirports;
 	}
+
+	public List<String> getCountryList() {
+		return choosenCountries;
+	}
+
+	public List<FormAirportData> getRouteDataList() {
+		List<FormAirportData> routeDataList = new ArrayList<FormAirportData>();
+		for(int i=0 ; i < size; i++ ) {
+			routeDataList.add(new FormAirportData(choosenAirports.get(i),choosenCountries.get(i)));
+		}
+		return routeDataList;
+	}
 	
 	public String getCountry(int i) {
 		return choosenCountries.get(i);

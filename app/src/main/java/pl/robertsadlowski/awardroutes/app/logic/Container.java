@@ -41,6 +41,8 @@ public class Container  {
 		int mileageNeeded = rulesModule.getMilesNeeded(
 				zonefilter.getStartZone(), zonefilter.getEndZone());
 		formPossibles.setMileageNeeded(mileageNeeded);
+		formPossibles.setZoneStart(zonefilter.getStartZone());
+		formPossibles.setZoneEnd(zonefilter.getEndZone());
 		return formPossibles;
 	}
 
