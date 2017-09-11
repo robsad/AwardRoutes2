@@ -84,9 +84,7 @@ public class MMZoneFilter implements IZoneFilter {
 		if ((i == size-1) && (!endZone.equals(ALL)))
 			return endZone;
 		String countryName = formChoosen.getCountry(i);
-		System.out.println("i= " + i + " country= " +countryName);  //comment
 		if (!countryName.equals(ALL)) {
-			System.out.println("rulesModule.getCountryZone(country) = " + rulesModule.getCountryNameZone(countryName)); //comment
 			return rulesModule.getCountryNameZone(countryName);
 		}
 		String airportName = formChoosen.getAirport(i);

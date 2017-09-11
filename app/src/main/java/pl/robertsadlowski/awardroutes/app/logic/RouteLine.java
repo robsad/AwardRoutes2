@@ -113,6 +113,7 @@ public class RouteLine {
 			System.out.println("choosenAirports " + airports.getAirportsByCountryName(choosenCountry));
 			return airports.getAirportsByCountryName(choosenCountry);
 		}
+		//grupa początkowa portów na podstawie wyboru strefy - do dodania
 		System.out.println("emptyset -> choosenAirport " + choosenAirport);
 		return Collections.<String>emptySet();
 	}

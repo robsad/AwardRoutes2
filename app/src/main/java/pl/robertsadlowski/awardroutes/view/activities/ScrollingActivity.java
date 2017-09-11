@@ -34,8 +34,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private TextView textZoneEnd;
     private TextView textMileage;
 
-    private ArrayAdapter<String> adapter;
-    ArrayList<String> airportList;
+    private int countainerSize;
     private Container container;
     private FormChoosen formChoosen;
     private FormPossibles formPossibles;
@@ -51,7 +50,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
         Application application = new Application(resources);
         ContainerManager containerManager = application.getContainerManager();
-        int countainerSize = 4;
+        countainerSize = 4;   //changable after adding UI
         container = containerManager.addCountainer(countainerSize);
 
         formChoosen = container.getFormChoosen();
@@ -63,25 +62,6 @@ public class ScrollingActivity extends AppCompatActivity {
         CustomMainListAdapter adapter = new CustomMainListAdapter(this, arrayOfUsers, formPossibles);
         listView.setAdapter(adapter);
 
-/*
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
-                                    long arg3) {
-                if(pos < 4)
-                {
-                    Intent intent = new Intent(ScrollingActivity.this, SelectAirports.class);
-                    ArrayList<String> airportList = new ArrayList<String>(formPossibles.getAirports(pos));
-                    airportList.add(0,"All");
-                    intent.putExtra("Type","Airport City");
-                    intent.putStringArrayListExtra("List", airportList);
-                    intent.putExtra("Position",pos);
-                    startActivityForResult(intent,REQEST_CODE);
-                }
-            }
-        });
-*/
-
         buttonZoneStart = (Button) findViewById(R.id.zoneStart);
         buttonZoneEnd  = (Button) findViewById(R.id.zoneEnd);
         textZoneStart = (TextView) findViewById(R.id.textZoneStart);
@@ -90,26 +70,52 @@ public class ScrollingActivity extends AppCompatActivity {
         buttonZoneStart.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View arg0) {
-                openButtonDialog();
+                openButtonDialog("start");
+            }});
+        buttonZoneEnd.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View arg0) {
+                openButtonDialog("end");
             }});
 
     }
 
 
-    private void openButtonDialog(){
+    private void openButtonDialog(String phase){
         AlertDialog.Builder myDialog = new AlertDialog.Builder(ScrollingActivity.this);
-        myDialog.setTitle("Choose Zone");
-        final String[] targetArray = formPossibles.getZones(0).toArray(new String[formPossibles.getZones(0).size()]);
+        myDialog.setTitle("Choose " + phase + " zone");
+        final String[] targetArray =  getButtonTargetArray(phase);
+        final String phaseZone = phase;
         myDialog.setItems(targetArray, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String item = targetArray[which];
-                buttonZoneStart.setText(item);
+                if (phaseZone.equals("start")) {
+                    buttonZoneStart.setText(item);
+                    formChoosen.setStartZone(item);
+                } else {
+                    buttonZoneEnd.setText(item);
+                    formChoosen.setEndZone(item);
+                }
+                formPossibles = container.calculateRoutes(formChoosen);
+                formsUpdate();
             }});
         myDialog.setNegativeButton("Cancel", null);
         myDialog.show();
     }
 
+    private String[] getButtonTargetArray(String phase) {
+        int position;
+        if (phase.equals("start"))  {
+            position = 0;
+        }
+        else {
+            position = countainerSize-1;
+        }
+        ArrayList<String> targetArray = new ArrayList<String>(formPossibles.getZones(position));
+        targetArray.add(0,"All");
+        return targetArray.toArray(new String[targetArray.size()]);
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         System.out.println("requestCode: " + requestCode + " resultCode " + resultCode);
