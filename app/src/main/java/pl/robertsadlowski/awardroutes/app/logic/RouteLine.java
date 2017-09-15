@@ -36,18 +36,41 @@ public class RouteLine {
 		return routeLineList.get(stopNr);
 	}
 
-	public void init() {
-		for(int i=0 ; i < size; i++ ) {
-			routeLineList.add(new TreeSet<String>());
-		}
+	public boolean isRouteLineActive() {
+		//System.out.println("!!!routeLineList: "+routeNr+ " "+!routeLineList.isEmpty() + " " + routeLineList);
+		if (routeLineList.isEmpty()) return false;
+		return true;
+	}
+
+	private void init() {
 		Set<String> initAirportNames = getInitAirports();
-		System.out.println("initAirportNames: " + initAirportNames);
 		if (!initAirportNames.isEmpty()) {
+			for(int i=0 ; i < size; i++ ) {
+				routeLineList.add(new TreeSet<String>());
+			}
 			calculate(initAirportNames);
 		}
 	}
 
-	public void calculate(Set<String> neighbours) {
+	private Set<String> getInitAirports() {
+		String choosenAirport = formChoosen.getAirport(routeNr);
+		Set<String> initAirports = new TreeSet<>();
+		if (!choosenAirport.equals("All")) {
+			initAirports.add(choosenAirport);
+			return initAirports;
+		}
+		String choosenCountry = formChoosen.getCountry(routeNr);
+		if (!choosenCountry.equals("All")) {
+			return airports.getAirportsByCountry(choosenCountry);
+		}
+		String zone="";
+		if ((routeNr==0)&&(!formChoosen.getStartZone().equals("All"))) zone = formChoosen.getStartZone();
+		if ((routeNr==size-1)&&(!formChoosen.getEndZone().equals("All"))) zone = formChoosen.getEndZone();
+		if (!zone.equals("")) return rulesModule.getAirportsByZone(zone);
+		return Collections.emptySet();
+	}
+
+	private void calculate(Set<String> neighbours) {
 		int positionL = routeNr;
 		int positionR = routeNr;
 		routeLineList.set(routeNr,neighbours);
@@ -59,9 +82,20 @@ public class RouteLine {
 			if (positionR<size) zoneFilter(positionR,newNeighbours);
 			neighbours = newNeighbours;
 		}
+		System.out.println("routeNr:"+routeNr);
+		System.out.println("Leg nr: 0 "+routeLineList.get(0));
+		System.out.println("Leg nr: 0 "+routeLineList.get(1));
+		System.out.println("Leg nr: 0 "+routeLineList.get(2));
+		System.out.println("Leg nr: 0 "+routeLineList.get(3));
+		System.out.println("");
 	}
 
-	public Set<String> calculateNeighbors(Set<String> initAirportNames) {
+	private boolean isEdge(int positionL, int positionR){
+		if ((positionL<1)&&(positionR>size)) return false;
+		else return true;
+	}
+
+	private Set<String> calculateNeighbors(Set<String> initAirportNames) {
 		Set<String> neighbors = new TreeSet<>();
 		for(String initAirportName : initAirportNames) {
 			String initAirportCode = airports.getAirportCodeByName(initAirportName);
@@ -90,32 +124,8 @@ public class RouteLine {
 		routeLineList.set(position,neighbours);
 	}
 
-	private boolean isEdge(int positionL, int positionR){
-		if ((positionL<1)&&(positionR>size)) return false;
-		else return true;
-	}
-
 	private boolean isActiveFilter() {
 		return formChoosen.isZoneRule();
-	}
-
-	private Set<String> getInitAirports() {
-		String choosenAirport = formChoosen.getAirport(routeNr);
-		Set<String> initAirports = new TreeSet<>();
-		if (!choosenAirport.equals("All")) {
-			initAirports.add(choosenAirport);
-			System.out.println("choosenAirport " + choosenAirport);
-			return initAirports;
-		}
-		String choosenCountry = formChoosen.getCountry(routeNr);
-		if (!choosenCountry.equals("All")) {
-			System.out.println("choosenCountry " + choosenCountry);
-			System.out.println("choosenAirports " + airports.getAirportsByCountryName(choosenCountry));
-			return airports.getAirportsByCountryName(choosenCountry);
-		}
-		//grupa początkowa portów na podstawie wyboru strefy - do dodania
-		System.out.println("emptyset -> choosenAirport " + choosenAirport);
-		return Collections.<String>emptySet();
 	}
 
 	@Override

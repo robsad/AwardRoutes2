@@ -39,19 +39,20 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
             LayoutInflater vi = LayoutInflater.from(getContext());
             //  (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = vi.inflate(R.layout.list_item_airport, parent, false);
+            holder.airportNr = (TextView) convertView.findViewById(R.id.airportNr);
             holder.airportName = (TextView) convertView.findViewById(R.id.airportCity);
             holder.airportCountry = (TextView) convertView.findViewById(R.id.airportCountry);
-            holder.title = (TextView) convertView.findViewById(R.id.airportTitle);
+            holder.airlineLeg = (TextView) convertView.findViewById(R.id.airline);
             convertView.setTag(holder);
         }
         else {
             holder = (Holder) convertView.getTag();
         }
+        int pos = position + 1;
+        holder.airportNr.setText("AIRPORT " + pos + ":");
         holder.airportName.setText(formAirportData.name);
         holder.airportCountry.setText(formAirportData.country);
-        int flightLeg = position + 1;
-        String titleTxt = "FLIGHT LEG " + flightLeg;
-        holder.title.setText(titleTxt);
+        holder.airlineLeg.setText(formPossibles.getAirline(position));
         holder.airportName.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     View parentRow = (View) v.getParent();
@@ -87,8 +88,9 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
     }
 
     static class Holder {
-        TextView title;
+        TextView airportNr;
         TextView airportName;
         TextView airportCountry;
+        TextView airlineLeg;
     }
 }

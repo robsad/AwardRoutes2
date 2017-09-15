@@ -5,24 +5,37 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/airportTitle"
-        android:layout_width="wrap_content"
+        android:id="@+id/airportNr"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:text="Title" />
+        android:text="AIRPORT 1:"
+        android:textSize="15sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/airportCity"
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="Name" />
+        android:clickable="true"
+        android:text="Name"
+        android:textSize="24sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/airportCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="Country"
+        android:textSize="24sp" />
 
     <View
         android:layout_width="match_parent"
@@ -30,16 +43,11 @@
         android:background="@android:color/darker_gray"/>
 
     <TextView
-        android:id="@+id/airportCountry"
-        android:clickable="true"
+        android:id="@+id/airline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="Country" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:textSize="15sp"
+        android:background="@android:color/darker_gray"
+        android:text=" " />
 
 </LinearLayout>

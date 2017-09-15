@@ -23,6 +23,7 @@ public class RulesModuleFactory {
 	private List<String> zoneNameList = new ArrayList<>();
 	private Map<String, List<String>> countriesByZone = new HashMap<>();
 	private Map<String, List<Integer>> milesTable = new HashMap<>();
+	private Map<String,String> airlines = new HashMap<>();
 
 	public RulesModuleFactory (Resources resources) {
 		this.resources = resources;
@@ -31,13 +32,14 @@ public class RulesModuleFactory {
 	public IRulesModule getModule(String moduleName, Airports airports, Map<String, List<Connection>> connectionsByOrigin) {
 		initModule();
 		//if (moduleName.equals("MilesMore") {}
-		IRulesModule rulesModule = new RulesMilesMore(connectionsByOrigin, airports, zoneNameList, countriesByZone, milesTable);
+		IRulesModule rulesModule = new RulesMilesMore(connectionsByOrigin, airports, zoneNameList, countriesByZone, milesTable, airlines);
 		return rulesModule;
 	}
 	
 	public void initModule(){
 			loadZonesFromFile();
 			loadTableFromFile();
+			loadAirlinesFromFile();
 			//System.out.println("miles table loaded: " + milesTable);
 		}
 	
@@ -73,7 +75,18 @@ public class RulesModuleFactory {
 		}
 	}
 
-
+	public void loadAirlinesFromFile() {
+		InputStream inputStream = resources.openRawResource(R.raw.airlines);
+		String csvLine;
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+			while ((csvLine = br.readLine()) != null) {
+				String[] dataArray = csvLine.split(";");
+				airlines.put(dataArray[0], dataArray[1]);
+			}
+		} catch (IOException ex) {
+			throw new RuntimeException("Error in reading CSV file: " + ex);
+		}
+	}
 
 	
 }

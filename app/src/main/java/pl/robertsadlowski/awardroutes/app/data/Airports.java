@@ -1,5 +1,6 @@
 package pl.robertsadlowski.awardroutes.app.data;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,10 +33,10 @@ public class Airports {
 		return countries;
 	}
 
-	public Set<String> getAirportsByCountryName(String country) {
-		System.out.println("country: " +  country);
-		System.out.println("return " + namesByCountry.get(country));
-		return namesByCountry.get(country);
+	public Set<String> getAirportsByCountry(String country) {
+		Set<String> airportsNames = namesByCountry.get(country);
+		if (airportsNames==null) return Collections.<String>emptySet();
+		return airportsNames;
 	}
 
 	public AirportsData getAirportByName(String airportName) {

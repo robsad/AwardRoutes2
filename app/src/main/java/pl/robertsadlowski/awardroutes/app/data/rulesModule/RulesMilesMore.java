@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
-import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 import pl.robertsadlowski.awardroutes.app.data.Airports;
+import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 
 public class RulesMilesMore implements IRulesModule {
 
@@ -17,19 +19,22 @@ public class RulesMilesMore implements IRulesModule {
 	private Map<String, String> zoneByCountryName = new HashMap<>();
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 	private Map<String, List<Integer>> milesTable;
+	private Map<String,String> airlines = new HashMap<>();
 	private Airports airports;
 
 	public RulesMilesMore(Map<String, List<Connection>> connectionsByOrigin,
 						  Airports airports,
 						  List<String> zoneNameList,
 						  Map<String, List<String>> countriesByZone,
-						  Map<String, List<Integer>> milesTable
+						  Map<String, List<Integer>> milesTable,
+						  Map<String,String> airlines
 	) {
 		this.connectionsByOrigin = connectionsByOrigin;
 		this.airports = airports;
 		this.countriesByZone = countriesByZone;
 		this.milesTable = milesTable;
 		this.zoneNameList = zoneNameList;
+		this.airlines = airlines;
 		makeZoneByCountryMap(countriesByZone);
 	}
 
@@ -39,10 +44,6 @@ public class RulesMilesMore implements IRulesModule {
 
 	public List<String> getZoneNameList() {
 		return zoneNameList;
-	}
-
-	public List<String> getCountryNamesByZone(String zone) {
-		return countriesByZone.get(zone);
 	}
 
 	public Airports getAirports() {
@@ -73,6 +74,33 @@ public class RulesMilesMore implements IRulesModule {
 
 	public IZoneFilter getZoneFilterInstance() {
 		return new MMZoneFilter(this);
+	}
+
+	public String getAirline(String originCity, String destCity) {
+		String airline="";
+		System.out.println(originCity + " -> " + destCity);
+		String originCode = airports.getAirportCodeByName(originCity);
+		String destCode = airports.getAirportCodeByName(destCity);
+		List<Connection> connections = connectionsByOrigin.get(originCode);
+		for(Connection connection : connections) {
+			if (connection.getDestination().equals(destCode)) {
+				airline = airlines.get(connection.getAirlinecode());
+			}
+		}
+		return airline;
+	}
+
+	public Set<String> getAirportsByZone(String zone) {
+		Set<String> airportsSet = new TreeSet<>();
+		List<String> countries = countriesByZone.get(zone);
+		for (String country : countries) {
+			System.out.println(country);
+			System.out.println(airports.getCountryByCode(country));
+			System.out.println(airports.getAirportsByCountry(airports.getCountryByCode(country)));
+			airportsSet.addAll(airports.getAirportsByCountry(airports.getCountryByCode(country)));
+		}
+		System.out.println(airportsSet);
+		return airportsSet;
 	}
 
 	private void makeZoneByCountryMap(Map<String, List<String>> countriesByZone) {

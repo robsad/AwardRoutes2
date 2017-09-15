@@ -1,9 +1,9 @@
 package pl.robertsadlowski.awardroutes.app.gateaway;
 
-		import java.util.ArrayList;
-		import java.util.List;
-		import java.util.Set;
-		import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class FormPossibles {
 
@@ -11,6 +11,7 @@ public class FormPossibles {
 	private List<Set<String>> possiblePorts = new ArrayList<>();
 	private List<Set<String>> possibleCountries = new ArrayList<>();
 	private List<Set<String>> possibleZones = new ArrayList<>();
+	private List<String> airlinesList = new ArrayList<>();
 	private int mileageNeeded;
 	private String zoneStart;
 	private String zoneEnd;
@@ -67,6 +68,14 @@ public class FormPossibles {
 	public void setMileageNeeded(int i) {this.mileageNeeded = i;}
 
 	public int getMileageNeeded() { return mileageNeeded;}
+
+	public void setAirlines(List<String> airlinesList) {
+		this.airlinesList = airlinesList;
+	}
+
+	public String getAirline(int i) {
+		return airlinesList.get(i);
+	}
 
 	public String toString() {
 		return possiblePorts.toString()
