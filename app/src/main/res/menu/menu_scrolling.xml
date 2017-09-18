@@ -3,8 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="pl.robertsadlowski.awardroutes.view.activities.ScrollingActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_new3segments"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_new3segments"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_new4segments"
+        android:orderInCategory="100"
+        android:title="@string/action_new4segments"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_new5segments"
+        android:orderInCategory="100"
+        android:title="@string/action_new5segments"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_AAmode"
+        android:orderInCategory="100"
+        android:title="@string/action_AAmode"
+        app:showAsAction="never" />
+
 </menu>

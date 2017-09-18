@@ -7,10 +7,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
+import pl.robertsadlowski.awardroutes.app.logic.Container;
 
 public class MMZoneFilter implements IZoneFilter {
 
-	static final String ALL = "All";
 	private int size;
 	private FormChoosen formChoosen;
 	private IRulesModule rulesModule;
@@ -43,13 +43,13 @@ public class MMZoneFilter implements IZoneFilter {
 		int endOfStartZone = 0;
 		int startOfEndZone = 0;
 		int numberOfZones = 0;
-		String zoneLast = ALL;
-		String zoneStart = ALL;
-		String zoneEnd = ALL;
+		String zoneLast = Container.ANY_ZONE;
+		String zoneStart = Container.ANY_ZONE;
+		String zoneEnd = Container.ANY_ZONE;
 		for (int i = 0; i < size; i++) {
 			String zoneNow = whatZone(i);
-			System.out.println("ZoneNow: " +  zoneNow);
-			if ((!zoneNow.equals(ALL)) && (!zoneNow.equals(zoneLast))) {
+			System.out.println("ZoneNow: " + i + " = " + zoneNow);
+			if ((!zoneNow.equals(Container.ANY_ZONE)) && (!zoneNow.equals(zoneLast))) {
 				zoneLast = zoneNow;
 				numberOfZones++;
 				if (numberOfZones == 1) {
@@ -68,8 +68,8 @@ public class MMZoneFilter implements IZoneFilter {
 			for (int i = 0; i < size; i++) {
 				String zone = whatZone(i);
 				Set<String> zones = new TreeSet<>();
-				if (zone.equals(ALL)) {
-					zones.add(ALL);
+				if (zone.equals(Container.ANY_ZONE)) {
+					zones.add(Container.ANY_ZONE);
 				} else {
 					zones.add(zone);
 				}
@@ -79,19 +79,19 @@ public class MMZoneFilter implements IZoneFilter {
 	}
 
 	private String whatZone(int i) {
-		if ((i == 0) && (!startZone.equals(ALL)))
+		if ((i == 0) && (!startZone.equals(Container.ANY_ZONE)))
 			return startZone;
-		if ((i == size-1) && (!endZone.equals(ALL)))
+		if ((i == size-1) && (!endZone.equals(Container.ANY_ZONE)))
 			return endZone;
 		String countryName = formChoosen.getCountry(i);
-		if (!countryName.equals(ALL)) {
+		if (!countryName.equals(Container.ANY_COUNTRY)) {
 			return rulesModule.getCountryNameZone(countryName);
 		}
 		String airportName = formChoosen.getAirport(i);
-		if (!airportName.equals(ALL)) {
+		if (!airportName.equals(Container.ANY_AIRPORT)) {
 			return rulesModule.getAirportZone(airportName);
 		}
-		return ALL;
+		return Container.ANY_ZONE;
 	}
 
 	private void makeZoneMap(int start, String startZone, int end,
@@ -108,6 +108,7 @@ public class MMZoneFilter implements IZoneFilter {
 		addCalculation(end, size, zonesC);
 		this.startZone = startZone;
 		this.endZone = endZone;
+		System.out.println("ZONE MAP "+zoneCalculation);
 	}
 
 	public void addCalculation(int start, int end, Set<String> zone) {

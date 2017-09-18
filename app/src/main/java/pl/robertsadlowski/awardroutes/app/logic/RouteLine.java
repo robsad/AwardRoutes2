@@ -55,17 +55,17 @@ public class RouteLine {
 	private Set<String> getInitAirports() {
 		String choosenAirport = formChoosen.getAirport(routeNr);
 		Set<String> initAirports = new TreeSet<>();
-		if (!choosenAirport.equals("All")) {
+		if (!choosenAirport.equals(Container.ANY_AIRPORT)) {
 			initAirports.add(choosenAirport);
 			return initAirports;
 		}
 		String choosenCountry = formChoosen.getCountry(routeNr);
-		if (!choosenCountry.equals("All")) {
+		if (!choosenCountry.equals(Container.ANY_COUNTRY)) {
 			return airports.getAirportsByCountry(choosenCountry);
 		}
 		String zone="";
-		if ((routeNr==0)&&(!formChoosen.getStartZone().equals("All"))) zone = formChoosen.getStartZone();
-		if ((routeNr==size-1)&&(!formChoosen.getEndZone().equals("All"))) zone = formChoosen.getEndZone();
+		if ((routeNr==0)&&(!formChoosen.getStartZone().equals(Container.ANY_ZONE))) zone = formChoosen.getStartZone();
+		if ((routeNr==size-1)&&(!formChoosen.getEndZone().equals(Container.ANY_ZONE))) zone = formChoosen.getEndZone();
 		if (!zone.equals("")) return rulesModule.getAirportsByZone(zone);
 		return Collections.emptySet();
 	}
@@ -83,10 +83,9 @@ public class RouteLine {
 			neighbours = newNeighbours;
 		}
 		System.out.println("routeNr:"+routeNr);
-		System.out.println("Leg nr: 0 "+routeLineList.get(0));
-		System.out.println("Leg nr: 0 "+routeLineList.get(1));
-		System.out.println("Leg nr: 0 "+routeLineList.get(2));
-		System.out.println("Leg nr: 0 "+routeLineList.get(3));
+		for(int i=0 ; i < size; i++ ) {
+			System.out.println("Leg nr: " + i + routeLineList.get(i));
+		}
 		System.out.println("");
 	}
 
@@ -117,7 +116,7 @@ public class RouteLine {
 			for (String airport : neighbours) {
 				String thisZone = rulesModule.getAirportZone(airport);
 				if (possibleZones.contains(thisZone)) newNeighbours.add(airport);
-				if (possibleZones.contains("All")) newNeighbours.add(airport);
+				if (possibleZones.contains(Container.ANY_ZONE)) newNeighbours.add(airport);
 			}
 			neighbours = newNeighbours;
 		}

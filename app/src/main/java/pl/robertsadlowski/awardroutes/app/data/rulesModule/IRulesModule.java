@@ -19,4 +19,6 @@ public interface IRulesModule {
 	IZoneFilter getZoneFilterInstance();
     String getCountryNameZone(String country);
 	String getAirline(String originCity, String destCity);
+	String getMessage(int size, int mileageNeeded, String zoneStart, String zoneEnd);
+
 }

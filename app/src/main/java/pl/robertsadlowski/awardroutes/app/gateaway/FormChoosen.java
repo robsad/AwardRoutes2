@@ -3,6 +3,7 @@ package pl.robertsadlowski.awardroutes.app.gateaway;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import pl.robertsadlowski.awardroutes.app.logic.Container;
 
 public class FormChoosen {
 
@@ -10,15 +11,15 @@ public class FormChoosen {
 	private List<String> choosenAirports = new ArrayList<>();
 	private List<String> choosenCountries = new ArrayList<>();
 	private List<Set<String>> zoneCalculation;
-	private String startZone = "All";
-	private String endZone = "All";
+	private String startZone = Container.ANY_ZONE;
+	private String endZone = Container.ANY_ZONE;
 	private boolean zoneRule = true;
 	
 	public FormChoosen(int size) {
 		this.size = size;
 		for(int i=0 ; i < size; i++ ) {
-			choosenAirports.add("All");
-			choosenCountries.add("All");
+			choosenAirports.add(Container.ANY_AIRPORT);
+			choosenCountries.add(Container.ANY_COUNTRY);
 		}
 	}
 	
@@ -89,7 +90,15 @@ public class FormChoosen {
 	public Set<String> getZoneCalculation(int i) {
 		return zoneCalculation.get(i);
 	}
-	
+
+	public boolean isNothingChoosen() {
+		boolean test = true;
+		for(Set<String> zone : zoneCalculation) {
+			if (!zone.contains(Container.ANY_ZONE)) test = false;
+		}
+		return test;
+	}
+
 	public String toString() {
 		return "choosenAirports: " + choosenAirports.toString() +
 				"choosenCountries" + choosenCountries.toString();	 

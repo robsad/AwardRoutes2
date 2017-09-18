@@ -21,6 +21,8 @@ import pl.robertsadlowski.awardroutes.view.activities.SelectAirports;
 public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
 
     private final int REQEST_CODE = 1;
+    private final String ANY_AIRPOPT = "Any airport";
+    private final String ANY_COUNTRY = "Any country";
     Context context;
     FormPossibles formPossibles;
 
@@ -60,7 +62,7 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                     final int position = listView.getPositionForView(parentRow);
                     Intent intent = new Intent(context, SelectAirports.class);
                     ArrayList<String> airportList = new ArrayList<String>(formPossibles.getAirports(position));
-                    airportList.add(0,"All");
+                    airportList.add(0,ANY_AIRPOPT);
                     intent.putExtra("Type","Airport City");
                     intent.putStringArrayListExtra("List", airportList);
                     intent.putExtra("Position",position);
@@ -74,7 +76,7 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                     final int position = listView.getPositionForView(parentRow);
                     Intent intent = new Intent(context, SelectAirports.class);
                     ArrayList<String> countryList = new ArrayList<String>(formPossibles.getCountries(position));
-                    countryList.add(0,"All");
+                    countryList.add(0,ANY_COUNTRY);
                     intent.putExtra("Type","Country");
                     intent.putStringArrayListExtra("List", countryList);
                     intent.putExtra("Position",position);

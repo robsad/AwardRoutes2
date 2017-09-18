@@ -9,10 +9,10 @@ import java.util.TreeSet;
 
 import pl.robertsadlowski.awardroutes.app.data.Airports;
 import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
+import pl.robertsadlowski.awardroutes.app.logic.Container;
 
 public class RulesMilesMore implements IRulesModule {
 
-	static final String ALL = "All";
 	private List<String> zoneNameList = new ArrayList<>();
 	private Map<String, List<String>> countriesByZone = new HashMap<>();
 	private Map<String, String> zoneByCountry = new HashMap<>();
@@ -52,7 +52,7 @@ public class RulesMilesMore implements IRulesModule {
 
 	public int getMilesNeeded(String originZone, String destZone) {
 		System.out.println(originZone + " " + destZone);
-		if (originZone.equals(ALL)|| destZone.equals(ALL)) return 0;
+		if (originZone.equals(Container.ANY_ZONE)|| destZone.equals(Container.ANY_ZONE)) return 0;
 		int zoneIndex = zoneNameList.indexOf(destZone);
 		List<Integer> milesNeededList = milesTable.get(originZone);
 		int mileageNeeded = milesNeededList.get(zoneIndex)*500;
@@ -76,9 +76,19 @@ public class RulesMilesMore implements IRulesModule {
 		return new MMZoneFilter(this);
 	}
 
+	public String getMessage(int size, int mileageNeeded, String zoneStart, String zoneEnd) {
+		String message = null;
+		if (((size>3)&&(zoneStart.equals(zoneEnd)))&&(!zoneStart.equals(Container.ANY_ZONE))) {
+			message = "Travel within zone possible with up to 3 segments only";
+		}
+		if ((size<5)&&(mileageNeeded==50000)) {
+			message = "Travel possible with 5 segments without zone rules";
+		}
+		return message;
+	}
+
 	public String getAirline(String originCity, String destCity) {
 		String airline="";
-		System.out.println(originCity + " -> " + destCity);
 		String originCode = airports.getAirportCodeByName(originCity);
 		String destCode = airports.getAirportCodeByName(destCity);
 		List<Connection> connections = connectionsByOrigin.get(originCode);
@@ -94,12 +104,8 @@ public class RulesMilesMore implements IRulesModule {
 		Set<String> airportsSet = new TreeSet<>();
 		List<String> countries = countriesByZone.get(zone);
 		for (String country : countries) {
-			System.out.println(country);
-			System.out.println(airports.getCountryByCode(country));
-			System.out.println(airports.getAirportsByCountry(airports.getCountryByCode(country)));
 			airportsSet.addAll(airports.getAirportsByCountry(airports.getCountryByCode(country)));
 		}
-		System.out.println(airportsSet);
 		return airportsSet;
 	}
 

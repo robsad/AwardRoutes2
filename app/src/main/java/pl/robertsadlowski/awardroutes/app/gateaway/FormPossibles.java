@@ -15,6 +15,7 @@ public class FormPossibles {
 	private int mileageNeeded;
 	private String zoneStart;
 	private String zoneEnd;
+	private String message=null;
 
 	public FormPossibles(int size) {
 		this.size=size;
@@ -75,6 +76,14 @@ public class FormPossibles {
 
 	public String getAirline(int i) {
 		return airlinesList.get(i);
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 
 	public String toString() {

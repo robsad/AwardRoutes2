@@ -12,12 +12,11 @@ import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
 
 public class Airports {
 
-	private Map<String, AirportsData> airportByCode = new HashMap<>();
+	private Map<String, String> airportNameByCode = new HashMap<>();
 	private Map<String, AirportsData> airportByName = new HashMap<>();
 	private Map<String, List<AirportsData>> airportsByCountry = new HashMap<>();
 	private Map<String, Set<String>> namesByCountry = new HashMap<>();
 	private Set<String> airportNames = new TreeSet<>();
-	private Set<String> countries = new TreeSet<>();
 	private Map<String, String> countryByCode = new HashMap<>();
 
 	public Airports(List<AirportsData> airportsData, Map<String, String> countryByCode){
@@ -26,11 +25,7 @@ public class Airports {
 	}
 
 	public Set<String> getAllAirportNames() {
-		return airportNames;
-	}
-
-	public Set<String> getCountries() {
-		return countries;
+		return new TreeSet<String>(airportNames);
 	}
 
 	public Set<String> getAirportsByCountry(String country) {
@@ -39,20 +34,12 @@ public class Airports {
 		return airportsNames;
 	}
 
-	public AirportsData getAirportByName(String airportName) {
-		return airportByName.get(airportName);
-	}
-
-	public AirportsData getAirportByCode(String airportCode) {
-		return airportByCode.get(airportCode);
-	}
-
 	public String getAirportCodeByName(String airportName) {
 		return getAirportByName(airportName).getCityCode();
 	}
 
 	public String getAirportNameByCode(String airportCode) {
-		return getAirportByCode(airportCode).getCityName();
+		return airportNameByCode.get(airportCode);
 	}
 
 	public String getAirportsCountryCode(String airport) {
@@ -67,11 +54,24 @@ public class Airports {
 		return countryByCode.get(countryCode);
 	}
 
+	private AirportsData getAirportByName(String airportName) {
+		return airportByName.get(airportName);
+	}
+
 	private void translateAirports(List<AirportsData> airportsData){
 		for (AirportsData airport : airportsData) {
-			airportByCode.put(airport.getCityCode(), airport);
-			airportByName.put(airport.getCityName(), airport);
-			airportNames.add(airport.getCityName());
+			if (isHawaii(airport)) {
+				airport.setCountryCode("USH");
+			}
+			if (isCanary(airport)) {
+				airport.setCountryCode("ESC");
+			}
+			if (isAzores(airport)) {
+				airport.setCountryCode("PTA");
+			}
+			airportNameByCode.put(airport.getCityCode(), airport.getCityName()+","+airport.getCountryCode());
+			airportByName.put(airport.getCityName()+","+airport.getCountryCode(), airport);
+			airportNames.add(airport.getCityName()+","+airport.getCountryCode());
 			makeCountryMap(airport);
 		}
 	}
@@ -80,10 +80,6 @@ public class Airports {
 		List<AirportsData> airportByCountry;
 		Set<String> nameByCountry;
 		String countryKey = airport.getCountryCode();
-		if (isHawaii(airport)) {
-			countryKey = "USH";
-			airport.setCountryCode("USH");
-		}
 		if (airportsByCountry.containsKey(countryKey)) {
 			airportByCountry = airportsByCountry.get(countryKey);
 			nameByCountry = namesByCountry.get(countryByCode.get(countryKey));
@@ -93,7 +89,7 @@ public class Airports {
 		}
 		airportByCountry.add(airport);
 		airportsByCountry.put(countryKey, airportByCountry);
-		nameByCountry.add(airport.getCityName());
+		nameByCountry.add(airport.getCityName()+","+airport.getCountryCode());
 		namesByCountry.put(countryByCode.get(countryKey), nameByCountry);
 	}
 
@@ -101,6 +97,24 @@ public class Airports {
 		double lat = airport.getLat();
 		double lon = airport.getLon();
 		if (isHawaiiLat(lat) && isHawaiiLon(lon))
+			return true;
+		else
+			return false;
+	}
+
+	private boolean isCanary(AirportsData airport) {
+		double lat = airport.getLat();
+		double lon = airport.getLon();
+		if (isCanaryLat(lat) && isCanaryLon(lon))
+			return true;
+		else
+			return false;
+	}
+
+	private boolean isAzores(AirportsData airport) {
+		double lat = airport.getLat();
+		double lon = airport.getLon();
+		if (isAzoresLat(lat) && isAzoresLon(lon))
 			return true;
 		else
 			return false;
@@ -115,6 +129,34 @@ public class Airports {
 
 	private boolean isHawaiiLon(double lon) {
 		if ((lon > -160) && (lon < -154))
+			return true;
+		else
+			return false;
+	}
+
+    private boolean isCanaryLat(double lat) {
+        if ((lat > 27.5) && (lat < 30))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean isCanaryLon(double lon) {
+        if ((lon > -19) && (lon < -13.2))
+            return true;
+        else
+            return false;
+    }
+
+	private boolean isAzoresLat(double lat) {
+		if ((lat > 32) && (lat < 41))
+			return true;
+		else
+			return false;
+	}
+
+	private boolean isAzoresLon(double lon) {
+		if ((lon > -34) && (lon < -16))
 			return true;
 		else
 			return false;
