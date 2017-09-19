@@ -33,7 +33,7 @@ public class SelectAirports extends AppCompatActivity {
         position = intent.getIntExtra("Position",0);
 
         listView = (ListView) findViewById(R.id.listViewAirports);
-        adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);
+        adapter = new ArrayAdapter<String>(this, R.layout.list_item_airport, airportList);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

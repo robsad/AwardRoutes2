@@ -35,7 +35,6 @@ public class Container {
 		IZoneFilter zonefilter = rulesModule.getZoneFilterInstance();
 		List<Set<String>> zoneCalculated = zonefilter
 				.calculateZones(formChoosen);
-		//System.out.println("zoneCalculated:" + zoneCalculated);
 		formChoosen.setZoneCalculation(zoneCalculated);
 		setRouteLines(formChoosen);
 		FormPossibles formPossibles = calculateRoutesIntersections(formChoosen);
@@ -66,10 +65,14 @@ public class Container {
 			} else {
 				intersection = intersection(i,formChoosen);
 			}
-			formPossibles.setAirports(i, intersection);
 			Set<String> possibleCountries = calculatePossibleCountry(formChoosen.getAirport(i), intersection);
 			formPossibles.setCountries(i, possibleCountries);
-			formPossibles.setZones(i, calculatePossibleZones(possibleCountries));
+			String choosenCountry = formChoosen.getCountry(i);
+			formPossibles.setZones(i, calculatePossibleZones(choosenCountry,possibleCountries));
+			if (!choosenCountry.equals(ANY_COUNTRY)) {
+				intersection.retainAll(airports.getAirportsByCountry(choosenCountry));
+			}
+			formPossibles.setAirports(i, intersection);
 		}
 		return formPossibles;
 	}
@@ -86,10 +89,14 @@ public class Container {
 		return new TreeSet<String>(possibleCountries);
 	}
 
-	private Set<String> calculatePossibleZones(Set<String> possibleCoutries) {
+	private Set<String> calculatePossibleZones(String choosenCountry, Set<String> possibleCoutries) {
 		Set<String> possibleZones = new TreeSet<String>();
-		for (String country : possibleCoutries) {
-			possibleZones.add(rulesModule.getCountryNameZone(country));
+		if (!choosenCountry.equals(ANY_COUNTRY)) {
+			possibleZones.add(rulesModule.getCountryNameZone(choosenCountry));
+		} else {
+			for (String country : possibleCoutries) {
+				possibleZones.add(rulesModule.getCountryNameZone(country));
+			}
 		}
 		return  new TreeSet<String>(possibleZones);
 	}
@@ -103,23 +110,15 @@ public class Container {
 			if (routeLine.isRouteLineActive()) {
 				Set<String> routeStop = routeLine.getRouteLineStop(i);
 					if (((i==j)&&((!choosenAirport.equals(ANY_AIRPORT))||(!choosenCountry.equals(ANY_COUNTRY))))) {
-					System.out.println("choosenAirport " + choosenAirport + " routeStop przed: " + routeStop);
 					routeStop = airports.getAllAirportNames();
-					if (!choosenCountry.equals(ANY_COUNTRY)) {
-						routeStop.retainAll(airports.getAirportsByCountry(choosenCountry));
-					}
-					System.out.println("Route stop " + j + " result: " + routeStop);
 				}
 				if (intersection==null) {
 					intersection=routeStop;
 				} else {
 					intersection.retainAll(routeStop);
 				}
-				System.out.println("Route stop " + j + " result: " + routeStop);
 			}
 		}
-		System.out.println("INTERSECTION " + i + " result: " + intersection);
-		System.out.println("");
 		return new TreeSet<String>(intersection);
 	}
 

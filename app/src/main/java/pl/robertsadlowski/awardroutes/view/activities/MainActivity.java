@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,13 +28,13 @@ import pl.robertsadlowski.awardroutes.app.logic.Container;
 import pl.robertsadlowski.awardroutes.app.logic.ContainerManager;
 import pl.robertsadlowski.awardroutes.view.adapters.CustomMainListAdapter;
 
-public class ScrollingActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
     private Button buttonZoneStart;
     private Button buttonZoneEnd;
-    //private TextView textZoneStart;
-    //private TextView textZoneEnd;
+    private TextView textZoneStart;
+    private TextView textZoneEnd;
     private TextView textMileage;
 
     private int countainerSize;
@@ -45,7 +47,7 @@ public class ScrollingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scrolling);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -53,10 +55,13 @@ public class ScrollingActivity extends AppCompatActivity {
         }
         toolbar.setSubtitle("for Miles&More Programme");
         listView = (ListView) findViewById(R.id.listViewMain);
+        LayoutInflater layoutinflater = getLayoutInflater();
+        ViewGroup footerView = (ViewGroup)layoutinflater.inflate(R.layout.list_view_footer,listView,false);
+        listView.addFooterView(footerView);
         buttonZoneStart = (Button) findViewById(R.id.zoneStart);
         buttonZoneEnd  = (Button) findViewById(R.id.zoneEnd);
-        //textZoneStart = (TextView) findViewById(R.id.textZoneStart);
-        //textZoneEnd = (TextView) findViewById(R.id.textZoneEnd);
+        textZoneStart = (TextView) findViewById(R.id.textZoneStart);
+        textZoneEnd = (TextView) findViewById(R.id.textZoneEnd);
         textMileage = (TextView) findViewById(R.id.textMileage);
         buttonZoneStart.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -93,7 +98,7 @@ public class ScrollingActivity extends AppCompatActivity {
     };
 
     private void openButtonDialog(String phase){
-        AlertDialog.Builder myDialog = new AlertDialog.Builder(ScrollingActivity.this);
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(MainActivity.this);
         myDialog.setTitle("Choose " + phase + " zone");
         final String[] targetArray =  getButtonTargetArray(phase);
         final String phaseZone = phase;
@@ -101,11 +106,15 @@ public class ScrollingActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String item = targetArray[which];
+                String itemView = targetArray[which];
+                if (item.equals(Container.ANY_ZONE)) {
+                    itemView = "Select " + phaseZone + " zone";
+                }
                 if (phaseZone.equals("start")) {
-                    buttonZoneStart.setText(item);
+                    buttonZoneStart.setText(itemView);
                     formChoosen.setStartZone(item);
                 } else {
-                    buttonZoneEnd.setText(item);
+                    buttonZoneEnd.setText(itemView);
                     formChoosen.setEndZone(item);
                 }
                 formPossibles = container.calculateRoutes(formChoosen);
@@ -124,7 +133,7 @@ public class ScrollingActivity extends AppCompatActivity {
             position = countainerSize-1;
         }
         ArrayList<String> targetArray = new ArrayList<String>(formPossibles.getZones(position));
-        targetArray.add(0,"Any zone");
+        targetArray.add(0,Container.ANY_ZONE);
         return targetArray.toArray(new String[targetArray.size()]);
     }
 
@@ -142,20 +151,21 @@ public class ScrollingActivity extends AppCompatActivity {
             formChoosen.setZoneRule(false);
         }
         formPossibles = container.calculateRoutes(formChoosen);
+        buttonZoneStart.setText("Select start zone");
+        buttonZoneEnd.setText("Select end zone");
         formsUpdate();
     }
 
     private void formsUpdate() {
         ArrayList<FormAirportData> arrayOfUsers = new ArrayList<FormAirportData>(formChoosen.getRouteDataList());
-        //adapter = new ArrayAdapter<String>(this, R.layout.row, airportList);  //simple adapter
         CustomMainListAdapter adapter = new CustomMainListAdapter(this, arrayOfUsers, formPossibles);
         listView.setAdapter(adapter);
         updateMileage();
     }
 
     private void updateMileage() {
-        buttonZoneStart.setText(formPossibles.getZoneStart());
-        buttonZoneEnd.setText(formPossibles.getZoneEnd());
+        textZoneStart.setText(formPossibles.getZoneStart());
+        textZoneEnd.setText(formPossibles.getZoneEnd());
         if (formPossibles.getMessage()!=null) {
             showToast(formPossibles.getMessage());
         }
@@ -172,19 +182,14 @@ public class ScrollingActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_scrolling, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_new3segments) {
             initCountainer(3);
             return true;

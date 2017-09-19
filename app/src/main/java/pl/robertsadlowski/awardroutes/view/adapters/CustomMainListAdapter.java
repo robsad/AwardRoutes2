@@ -40,7 +40,7 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
             holder = new Holder();
             LayoutInflater vi = LayoutInflater.from(getContext());
             //  (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = vi.inflate(R.layout.list_item_airport, parent, false);
+            convertView = vi.inflate(R.layout.list_item_main, parent, false);
             holder.airportNr = (TextView) convertView.findViewById(R.id.airportNr);
             holder.airportName = (TextView) convertView.findViewById(R.id.airportCity);
             holder.airportCountry = (TextView) convertView.findViewById(R.id.airportCountry);

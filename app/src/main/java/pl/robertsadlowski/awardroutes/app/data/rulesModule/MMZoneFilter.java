@@ -48,7 +48,6 @@ public class MMZoneFilter implements IZoneFilter {
 		String zoneEnd = Container.ANY_ZONE;
 		for (int i = 0; i < size; i++) {
 			String zoneNow = whatZone(i);
-			System.out.println("ZoneNow: " + i + " = " + zoneNow);
 			if ((!zoneNow.equals(Container.ANY_ZONE)) && (!zoneNow.equals(zoneLast))) {
 				zoneLast = zoneNow;
 				numberOfZones++;
@@ -64,17 +63,11 @@ public class MMZoneFilter implements IZoneFilter {
 		}
 		if (numberOfZones > 1) {
 			makeZoneMap(endOfStartZone, zoneStart, startOfEndZone, zoneEnd);
+		}
+		else if ((numberOfZones == 1)&&(size==3)) {
+			mapWithOneZone(zoneStart);
 		} else {
-			for (int i = 0; i < size; i++) {
-				String zone = whatZone(i);
-				Set<String> zones = new TreeSet<>();
-				if (zone.equals(Container.ANY_ZONE)) {
-					zones.add(Container.ANY_ZONE);
-				} else {
-					zones.add(zone);
-				}
-				zoneCalculation.add(zones);
-			}
+			mapTempOneZone();
 		}
 	}
 
@@ -108,12 +101,36 @@ public class MMZoneFilter implements IZoneFilter {
 		addCalculation(end, size, zonesC);
 		this.startZone = startZone;
 		this.endZone = endZone;
-		System.out.println("ZONE MAP "+zoneCalculation);
 	}
 
 	public void addCalculation(int start, int end, Set<String> zone) {
 		for (int i = start; i < end; i++) {
 			zoneCalculation.add(zone);
+		}
+	}
+
+	private void mapWithOneZone(String zone) {
+		for (int i = 0; i < size; i++) {
+			Set<String> zones = new TreeSet<>();
+			zones.add(zone);
+			zoneCalculation.add(zones);
+		}
+		this.startZone = zone;
+		this.endZone = zone;
+	}
+
+	private void mapTempOneZone() {
+		for (int i = 0; i < size; i++) {
+			String zone = whatZone(i);
+			Set<String> zones = new TreeSet<>();
+			if (zone.equals(Container.ANY_ZONE)) {
+				zones.add(Container.ANY_ZONE);
+			} else {
+				zones.add(zone);
+				if (i==0) this.startZone = zone;
+				if (i==size-1) this.endZone = zone;
+			}
+			zoneCalculation.add(zones);
 		}
 	}
 
