@@ -1,4 +1,7 @@
 # AwardRoutes2
-Android App - helps to find route possibilities for MilesMore award tickets
 
-![Screenshot](http://robertsadlowski.pl/app/Screenshot_2017-09-18-15-33-28.png)
+Android Application helps to find route possibilities for award tickets. Now for M&M Programme with all Star Alliance world routes. Soon for AAdvantage Programme with all One World routes. How it works? By choosing e.g the first and third airport, you will see by what other airports you can fly with all M&M rules and how many miles you need.
+
+![Screenshot](http://robertsadlowski.pl/app/Screenshot_2017-09-20-13-18-59.png)
+
+![Screenshot](http://robertsadlowski.pl/app/Screenshot_2017-09-20-13-20-08.png)
