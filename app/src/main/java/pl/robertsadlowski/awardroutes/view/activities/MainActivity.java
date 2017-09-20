@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private Button buttonZoneStart;
     private Button buttonZoneEnd;
-    private TextView textZoneStart;
-    private TextView textZoneEnd;
+    private TextView textZoneStartEnd;
     private TextView textMileage;
 
     private int countainerSize;
@@ -58,10 +57,11 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater layoutinflater = getLayoutInflater();
         ViewGroup footerView = (ViewGroup)layoutinflater.inflate(R.layout.list_view_footer,listView,false);
         listView.addFooterView(footerView);
+        ViewGroup headerView = (ViewGroup)layoutinflater.inflate(R.layout.list_view_header,listView,false);
+        listView.addHeaderView(headerView);
         buttonZoneStart = (Button) findViewById(R.id.zoneStart);
         buttonZoneEnd  = (Button) findViewById(R.id.zoneEnd);
-        textZoneStart = (TextView) findViewById(R.id.textZoneStart);
-        textZoneEnd = (TextView) findViewById(R.id.textZoneEnd);
+        textZoneStartEnd = (TextView) findViewById(R.id.textZoneStartEnd);
         textMileage = (TextView) findViewById(R.id.textMileage);
         buttonZoneStart.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -164,15 +164,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateMileage() {
-        textZoneStart.setText(formPossibles.getZoneStart());
-        textZoneEnd.setText(formPossibles.getZoneEnd());
+        String zonesRoute = formPossibles.getZoneStart() + " -> " + formPossibles.getZoneEnd();
+        textZoneStartEnd.setText(zonesRoute);
         if (formPossibles.getMessage()!=null) {
             showToast(formPossibles.getMessage());
         }
         if (formPossibles.getMileageNeeded()>0) {
-            textMileage.setText("You will need " + String.valueOf(formPossibles.getMileageNeeded()) + " miles for one way trip");
+            textMileage.setText("You will need " + String.valueOf(formPossibles.getMileageNeeded()) + " miles for one way trip (eco)");
         } else {
-            textMileage.setText("");
+            textMileage.setText("Select route to know how many miles is needed");
         }
     }
 

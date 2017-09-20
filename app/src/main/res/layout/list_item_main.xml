@@ -37,18 +37,12 @@
         android:text="Country"
         android:textSize="24sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
     <TextView
         android:id="@+id/airline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:background="@android:color/darker_gray"
-        android:text=" " />
+        android:background="@color/colorPrimaryLight"/>
 
 </LinearLayout>
 

@@ -59,7 +59,7 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                 public void onClick(View v) {
                     View parentRow = (View) v.getParent();
                     ListView listView = (ListView) parentRow.getParent();
-                    final int position = listView.getPositionForView(parentRow);
+                    final int position = listView.getPositionForView(parentRow)-1;
                     Intent intent = new Intent(context, SelectAirports.class);
                     ArrayList<String> airportList = new ArrayList<String>(formPossibles.getAirports(position));
                     airportList.add(0,ANY_AIRPOPT);
@@ -73,7 +73,7 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                 public void onClick(View v) {
                     View parentRow = (View) v.getParent();
                     ListView listView = (ListView) parentRow.getParent();
-                    final int position = listView.getPositionForView(parentRow);
+                    final int position = listView.getPositionForView(parentRow)-1;
                     Intent intent = new Intent(context, SelectAirports.class);
                     ArrayList<String> countryList = new ArrayList<String>(formPossibles.getCountries(position));
                     countryList.add(0,ANY_COUNTRY);

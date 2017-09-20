@@ -40,7 +40,7 @@ public class Container {
 		FormPossibles formPossibles = calculateRoutesIntersections(formChoosen);
 		String zoneStart = zonefilter.getStartZone();
 		String zoneEnd = zonefilter.getEndZone();
-		int mileageNeeded = rulesModule.getMilesNeeded(zoneStart,zoneEnd);
+		int mileageNeeded = rulesModule.getMilesNeeded(size, zoneStart,zoneEnd);
 		formPossibles.setMileageNeeded(mileageNeeded);
 		formPossibles.setZoneStart(zoneStart);
 		formPossibles.setZoneEnd(zoneEnd);

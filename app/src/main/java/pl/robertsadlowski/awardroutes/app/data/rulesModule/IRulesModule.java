@@ -12,7 +12,7 @@ public interface IRulesModule {
 	Map<String, List<Connection>> getConnectionsByOrigin();	
 	List<String> getZoneNameList();
 	Set<String> getAirportsByZone(String zone);
-	int getMilesNeeded(String originZone, String destZone);
+	int getMilesNeeded(int size, String originZone, String destZone);
 	String getAirportZone(String airport);
 	String getCountryZone(String countryCode);
 	Airports getAirports();

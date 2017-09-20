@@ -50,12 +50,15 @@ public class RulesMilesMore implements IRulesModule {
 		return airports;
 	}
 
-	public int getMilesNeeded(String originZone, String destZone) {
+	public int getMilesNeeded(int size, String originZone, String destZone) {
 		System.out.println(originZone + " " + destZone);
 		if (originZone.equals(Container.ANY_ZONE)|| destZone.equals(Container.ANY_ZONE)) return 0;
 		int zoneIndex = zoneNameList.indexOf(destZone);
 		List<Integer> milesNeededList = milesTable.get(originZone);
 		int mileageNeeded = milesNeededList.get(zoneIndex)*500;
+		if (size==5)  {
+			mileageNeeded=50000;
+		}
 		return mileageNeeded;
 	}
 
