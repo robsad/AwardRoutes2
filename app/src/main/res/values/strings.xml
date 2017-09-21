@@ -4,6 +4,7 @@
     <string name="action_new4segments">New 4 segments (zone to zone)</string>
     <string name="action_new5segments">New 5 segments (multi zone)</string>
     <string name="action_AAmode">AAdvantage mode</string>
+    <string name="action_MMmode">MilesMore mode</string>
     <string name="action_settings">settings</string>
     <string name="title_activity_select_airports">SelectAirports</string>
 </resources>

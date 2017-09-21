@@ -47,7 +47,9 @@ public class Airports {
 	}
 
 	public String getAirportsCountryName(String airport) {
-		return countryByCode.get(getAirportsCountryCode(airport));
+		String countryName = countryByCode.get(getAirportsCountryCode(airport));
+		if (countryName==null) System.out.println("ALARM, brak kraju dla:" + airport);
+		return countryName;
 	}
 
 	public String getCountryByCode(String countryCode) {

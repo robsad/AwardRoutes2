@@ -18,6 +18,11 @@
         android:title="@string/action_new5segments"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_MMmode"
+        android:orderInCategory="100"
+        android:title="@string/action_MMmode"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_AAmode"
         android:orderInCategory="100"
         android:title="@string/action_AAmode"

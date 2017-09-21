@@ -30,18 +30,20 @@ import pl.robertsadlowski.awardroutes.view.adapters.CustomMainListAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final int REQEST_CODE = 1;
     private ListView listView;
     private Button buttonZoneStart;
     private Button buttonZoneEnd;
     private TextView textZoneStartEnd;
     private TextView textMileage;
-
+    private Application application;
     private int countainerSize;
     private ContainerManager containerManager;
     private Container container;
     private FormChoosen formChoosen;
     private FormPossibles formPossibles;
-    private final int REQEST_CODE = 1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 openButtonDialog("end");
             }});
         Resources resources = getResources();
-        initApp(resources);
+        logicStartConfiguration(resources);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -137,10 +139,14 @@ public class MainActivity extends AppCompatActivity {
         return targetArray.toArray(new String[targetArray.size()]);
     }
 
-    private void initApp(Resources resources) {
-        Application application = new Application(resources);
-        containerManager = application.getContainerManager();
+    private void logicStartConfiguration(Resources resources) {
+        application = new Application(resources);
+        getCountainerManager("MilesMore");
         initCountainer(4);
+    }
+
+    private void getCountainerManager(String programmeName) {
+        containerManager = application.getContainerManager(programmeName);
     }
 
     private void initCountainer(int size) {
@@ -172,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         if (formPossibles.getMileageNeeded()>0) {
             textMileage.setText("You will need " + String.valueOf(formPossibles.getMileageNeeded()) + " miles for one way trip (eco)");
         } else {
-            textMileage.setText("Select route to know how many miles is needed");
+            textMileage.setText("Select route to know how many miles you need");
         }
     }
 
@@ -202,8 +208,14 @@ public class MainActivity extends AppCompatActivity {
             initCountainer(5);
             return true;
         }
+        if (id == R.id.action_MMmode) {
+            getCountainerManager("MilesMore");
+            initCountainer(4);
+            return true;
+        }
         if (id == R.id.action_AAmode) {
-            showToast("Not implemented yet");
+            getCountainerManager("AAdvantage");
+            initCountainer(4);
             return true;
         }
 

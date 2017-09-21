@@ -13,25 +13,24 @@ import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.RulesModuleFactory;
 import pl.robertsadlowski.awardroutes.app.logic.ContainerManager;
 
-public class Application
-{
+public class Application {
+
 	Resources resources;
+	private Map<String,String> airlines;
+	private Map<String, String> countryByCode;
 
 	public Application (Resources resources) {
 		this.resources = resources;
+		DataLoader dataLoader = new DataLoader(resources);
+		countryByCode = dataLoader.getCountryCodes();
+		airlines = dataLoader.getAirlines();
 	}
 
-    public ContainerManager getContainerManager()
+    public ContainerManager getContainerManager(String programmeName)
     {
-    	DataLoader dataLoader = new DataLoader(resources);
-    	List<AirportsData> airportsData = dataLoader.getAirports();
-    	Map<String, String> countryByCode = dataLoader.getCountryCodes();
-		Map<String, List<Connection>> connectionsByOrigin = dataLoader.getConnections();
-    	Airports airports = new Airports(airportsData,countryByCode);
-
     	RulesModuleFactory rulesFactory = new RulesModuleFactory(resources);
-    	IRulesModule milesMoreModule = rulesFactory.getModule("MilesMore", airports, connectionsByOrigin);
-		ContainerManager containerManager = new ContainerManager(milesMoreModule);
+    	IRulesModule rulesModule = rulesFactory.getModule(programmeName, countryByCode, airlines);
+		ContainerManager containerManager = new ContainerManager(rulesModule);
 		return containerManager;
     }
 
