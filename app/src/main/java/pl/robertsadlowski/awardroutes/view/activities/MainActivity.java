@@ -31,6 +31,7 @@ import pl.robertsadlowski.awardroutes.view.adapters.CustomMainListAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private final int REQEST_CODE = 1;
+    private Toolbar toolbar;
     private ListView listView;
     private Button buttonZoneStart;
     private Button buttonZoneEnd;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Award Routes Finder");
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getCountainerManager(String programmeName) {
+        toolbar.setSubtitle("for " +  programmeName + " Programme");
         containerManager = application.getContainerManager(programmeName);
     }
 

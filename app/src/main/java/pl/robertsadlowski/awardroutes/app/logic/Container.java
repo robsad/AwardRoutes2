@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pl.robertsadlowski.awardroutes.app.data.Airports;
+import pl.robertsadlowski.awardroutes.app.data.airports.AbstractAirports;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.IZoneFilter;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
@@ -18,7 +18,7 @@ public class Container {
 	public static final String ANY_ZONE = "Any zone";
 	private List<RouteLine> routeLines = new ArrayList<>();
 	private IRulesModule rulesModule;
-	private Airports airports;
+	private AbstractAirports airports;
 	private final int size;
 
 	public Container(int size, IRulesModule rulesModule) {

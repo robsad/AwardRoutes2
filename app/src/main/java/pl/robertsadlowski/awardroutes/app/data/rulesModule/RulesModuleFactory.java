@@ -13,11 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import pl.robertsadlowski.awardroutes.R;
-import pl.robertsadlowski.awardroutes.app.data.Airports;
 import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
 import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 
@@ -28,36 +25,39 @@ public class RulesModuleFactory {
 	private Map<String, List<String>> countriesByZone = new HashMap<>();
 	private Map<String, List<Integer>> milesTable = new HashMap<>();
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
-	private Airports airports;
+	private List<AirportsData> airportsData = new ArrayList<>();
 
 	public RulesModuleFactory (Resources resources) {
 		this.resources = resources;
 	}
 
 	public IRulesModule getModule(String programmeName, Map<String, String> countryByCode, Map<String,String> airlines) {
-		String moduleName;
 		switch(programmeName){
 			case "MilesMore":
-				moduleName="star_alliance";
-				initModule(moduleName, countryByCode);
-				break;
+				initMilesMore(countryByCode);
+				return new RulesMilesMore(connectionsByOrigin,airportsData,countryByCode,zoneNameList,countriesByZone,milesTable,airlines);
 			case "AAdvantage":
-				moduleName="one_world";
-				initModule(moduleName, countryByCode);
-				break;
+				initAAdvantage(countryByCode);
+				return new RulesAAdvantage(connectionsByOrigin,airportsData,countryByCode,zoneNameList,countriesByZone,milesTable,airlines);
 			default:
 				System.out.println("Not implemented module");
 		}
-		return new RulesMilesMore(connectionsByOrigin, airports, zoneNameList, countriesByZone, milesTable, airlines);
+		return null;
 	}
 	
-	private void initModule(String moduleName, Map<String, String> countryByCode){
-		loadZonesFromFile(moduleName);
-		loadTableFromFile(moduleName);
-		loadConnectionsFromFile(moduleName);
-		List<AirportsData> airportsData = loadAirportsDataFromFile(moduleName);
-		airports = new Airports(airportsData,countryByCode);
+	private void initMilesMore(Map<String, String> countryByCode){
+		loadZonesFromFile("miles_more");
+		loadTableFromFile("miles_more");
+		loadConnectionsFromFile("star_alliance");
+		loadAirportsDataFromFile("star_alliance");
 		}
+
+	private void initAAdvantage(Map<String, String> countryByCode){
+		loadZonesFromFile("aadvantage");
+		loadTableFromFile("aadvantage");
+		loadConnectionsFromFile("one_world");
+		loadAirportsDataFromFile("one_world");
+	}
 
 	private int getId(String resourceName, Class<?> c) {
 		try {
@@ -70,10 +70,9 @@ public class RulesModuleFactory {
 		}
 	}
 
-	private List<AirportsData> loadAirportsDataFromFile(String moduleName) {
+	private void loadAirportsDataFromFile(String moduleName) {
 		int resourceNr = getId(moduleName+"_airports", R.raw.class);
 		InputStream inputStream = resources.openRawResource(resourceNr);
-		List<AirportsData> airportsData = new ArrayList<>();
 		String csvLine;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			while ((csvLine = br.readLine()) != null) {
@@ -84,7 +83,6 @@ public class RulesModuleFactory {
 		} catch (IOException ex) {
 			throw new RuntimeException("Error in reading CSV file: " + ex);
 		}
-		return airportsData;
 	}
 
 	private void loadConnectionsFromFile(String moduleName) {
@@ -111,7 +109,8 @@ public class RulesModuleFactory {
 	}
 	
 	public void loadZonesFromFile(String moduleName) {
-		InputStream inputStream = resources.openRawResource(R.raw.zones);
+		int resourceNr = getId(moduleName+"_zones", R.raw.class);
+		InputStream inputStream = resources.openRawResource(resourceNr);
 		String csvLine;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			while ((csvLine = br.readLine()) != null) {
@@ -126,7 +125,8 @@ public class RulesModuleFactory {
 	}
 	
 	public void loadTableFromFile(String moduleName) {
-		InputStream inputStream = resources.openRawResource(R.raw.table);
+		int resourceNr = getId(moduleName+"_table", R.raw.class);
+		InputStream inputStream = resources.openRawResource(resourceNr);
 		String csvLine;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			while ((csvLine = br.readLine()) != null) {

@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pl.robertsadlowski.awardroutes.app.data.Airports;
+import pl.robertsadlowski.awardroutes.app.data.airports.AbstractAirports;
+import pl.robertsadlowski.awardroutes.app.data.airports.AirportsMilesMore;
+import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
 import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 import pl.robertsadlowski.awardroutes.app.logic.Container;
 
@@ -20,21 +22,23 @@ public class RulesMilesMore implements IRulesModule {
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 	private Map<String, List<Integer>> milesTable;
 	private Map<String,String> airlines = new HashMap<>();
-	private Airports airports;
+	private AirportsMilesMore airports;
 
 	public RulesMilesMore(Map<String, List<Connection>> connectionsByOrigin,
-						  Airports airports,
+						  List<AirportsData> airportsData,
+						  Map<String, String> countryByCode,
 						  List<String> zoneNameList,
 						  Map<String, List<String>> countriesByZone,
 						  Map<String, List<Integer>> milesTable,
 						  Map<String,String> airlines
 	) {
 		this.connectionsByOrigin = connectionsByOrigin;
-		this.airports = airports;
 		this.countriesByZone = countriesByZone;
 		this.milesTable = milesTable;
 		this.zoneNameList = zoneNameList;
 		this.airlines = airlines;
+		airports = new AirportsMilesMore(countryByCode);
+		airports.setTranslatedAirports(airportsData);
 		makeZoneByCountryMap(countriesByZone);
 	}
 
@@ -46,7 +50,7 @@ public class RulesMilesMore implements IRulesModule {
 		return zoneNameList;
 	}
 
-	public Airports getAirports() {
+	public AbstractAirports getAirports() {
 		return airports;
 	}
 
@@ -72,6 +76,7 @@ public class RulesMilesMore implements IRulesModule {
 	}
 
 	public String getCountryNameZone(String countryName) {
+		if (zoneByCountryName.get(countryName)==null) System.out.println("ALARM: "+countryName);
 		return zoneByCountryName.get(countryName);
 	}
 

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
-import pl.robertsadlowski.awardroutes.app.data.Airports;
+import pl.robertsadlowski.awardroutes.app.data.airports.AbstractAirports;
 
 public interface IRulesModule {
 
@@ -15,7 +15,7 @@ public interface IRulesModule {
 	int getMilesNeeded(int size, String originZone, String destZone);
 	String getAirportZone(String airport);
 	String getCountryZone(String countryCode);
-	Airports getAirports();
+	AbstractAirports getAirports();
 	IZoneFilter getZoneFilterInstance();
     String getCountryNameZone(String country);
 	String getAirline(String originCity, String destCity);

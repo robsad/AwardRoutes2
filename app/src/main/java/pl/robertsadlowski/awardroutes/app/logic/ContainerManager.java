@@ -1,6 +1,6 @@
 package pl.robertsadlowski.awardroutes.app.logic;
 
-import pl.robertsadlowski.awardroutes.app.data.Airports;
+import pl.robertsadlowski.awardroutes.app.data.airports.AbstractAirports;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
 
 public class ContainerManager {
@@ -16,7 +16,7 @@ public class ContainerManager {
 		return new Container(size, rulesModule);
 	}
 
-	public Airports getAirportsModule() {
+	public AbstractAirports getAirportsModule() {
 		return rulesModule.getAirports();
 	}
 

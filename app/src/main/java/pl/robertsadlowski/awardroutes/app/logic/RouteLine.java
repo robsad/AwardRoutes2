@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pl.robertsadlowski.awardroutes.app.data.Airports;
+import pl.robertsadlowski.awardroutes.app.data.airports.AbstractAirports;
 import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
@@ -17,7 +17,7 @@ public class RouteLine {
 	private final List<Set<String>> routeLineList = new ArrayList<>();
 	private final Map<String, List<Connection>> connectionsByOrigin;
 	private final IRulesModule rulesModule;
-	private final Airports airports;
+	private final AbstractAirports abstractAirports;
 	private final FormChoosen formChoosen;
 	private final int size;
 	private final int routeNr;
@@ -26,7 +26,7 @@ public class RouteLine {
 		this.size = size;
 		this.routeNr = routeNr;
 		this.formChoosen = formChoosen;
-		this.airports = rulesModule.getAirports();
+		this.abstractAirports = rulesModule.getAirports();
 		this.rulesModule = rulesModule;
 		this.connectionsByOrigin = rulesModule.getConnectionsByOrigin();
 		init();
@@ -61,7 +61,7 @@ public class RouteLine {
 		}
 		String choosenCountry = formChoosen.getCountry(routeNr);
 		if (!choosenCountry.equals(Container.ANY_COUNTRY)) {
-			return airports.getAirportsByCountry(choosenCountry);
+			return abstractAirports.getAirportsByCountry(choosenCountry);
 		}
 		String zone="";
 		if ((routeNr==0)&&(!formChoosen.getStartZone().equals(Container.ANY_ZONE))) zone = formChoosen.getStartZone();
@@ -97,11 +97,11 @@ public class RouteLine {
 	private Set<String> calculateNeighbors(Set<String> initAirportNames) {
 		Set<String> neighbors = new TreeSet<>();
 		for(String initAirportName : initAirportNames) {
-			String initAirportCode = airports.getAirportCodeByName(initAirportName);
+			String initAirportCode = abstractAirports.getAirportCodeByName(initAirportName);
 			List<Connection> connections = connectionsByOrigin.get(initAirportCode);
 			if (connections!=null) {
 				for (Connection connection : connections) {
-					String connectionName = airports.getAirportNameByCode(connection.getDestination());
+					String connectionName = abstractAirports.getAirportNameByCode(connection.getDestination());
 					neighbors.add(connectionName);
 				}
 			}

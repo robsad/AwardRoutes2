@@ -2,13 +2,9 @@ package pl.robertsadlowski.awardroutes.app;
 
 import android.content.res.Resources;
 
-import java.util.List;
 import java.util.Map;
 
-import pl.robertsadlowski.awardroutes.app.data.Airports;
 import pl.robertsadlowski.awardroutes.app.data.DataLoader;
-import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
-import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.RulesModuleFactory;
 import pl.robertsadlowski.awardroutes.app.logic.ContainerManager;
