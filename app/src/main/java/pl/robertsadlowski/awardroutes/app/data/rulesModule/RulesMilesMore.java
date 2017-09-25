@@ -23,6 +23,7 @@ public class RulesMilesMore implements IRulesModule {
 	private Map<String, List<Integer>> milesTable;
 	private Map<String,String> airlines = new HashMap<>();
 	private AirportsMilesMore airports;
+	private IZoneFilter zoneFilter;
 
 	public RulesMilesMore(Map<String, List<Connection>> connectionsByOrigin,
 						  List<AirportsData> airportsData,
@@ -55,7 +56,6 @@ public class RulesMilesMore implements IRulesModule {
 	}
 
 	public int getMilesNeeded(int size, String originZone, String destZone) {
-		System.out.println(originZone + " " + destZone);
 		if (originZone.equals(Container.ANY_ZONE)|| destZone.equals(Container.ANY_ZONE)) return 0;
 		int zoneIndex = zoneNameList.indexOf(destZone);
 		List<Integer> milesNeededList = milesTable.get(originZone);
@@ -81,7 +81,8 @@ public class RulesMilesMore implements IRulesModule {
 	}
 
 	public IZoneFilter getZoneFilterInstance() {
-		return new MMZoneFilter(this);
+		zoneFilter = new ZoneFilterMilesMore(this);
+		return zoneFilter;
 	}
 
 	public String getMessage(int size, int mileageNeeded, String zoneStart, String zoneEnd) {

@@ -16,6 +16,9 @@ public class AirportsAAdvantage extends AbstractAirports {
             if (isHawaii(airport)) {
                 airport.setCountryCode("USH");
             }
+            if (isAlaska(airport)) {
+                airport.setCountryCode("USA");
+            }
             if (isManaus(airport)) {
                 airport.setCountryCode("BRM");
             }
@@ -33,6 +36,15 @@ public class AirportsAAdvantage extends AbstractAirports {
         double lat = airport.getLat();
         double lon = airport.getLon();
         if (isHawaiiLat(lat) && isHawaiiLon(lon))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean isAlaska(AirportsData airport) {
+        double lat = airport.getLat();
+        double lon = airport.getLon();
+        if ((isAlaska1Lat(lat) && isAlaska1Lon(lon)) || (isAlaska2Lat(lat) && isAlaska2Lon(lon)))
             return true;
         else
             return false;
@@ -61,6 +73,34 @@ public class AirportsAAdvantage extends AbstractAirports {
 
     private boolean isHawaiiLon(double lon) {
         if ((lon > -160) && (lon < -154))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean isAlaska1Lat(double lat) {
+        if ((lat > 54.7) && (lat < 60))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean isAlaska1Lon(double lon) {
+        if ((lon > -141) && (lon < -131))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean isAlaska2Lat(double lat) {
+        if ((lat > 51.7) && (lat < 71.5))
+            return true;
+        else
+            return false;
+    }
+
+    private boolean isAlaska2Lon(double lon) {
+        if ((lon > -177) && (lon < -141))
             return true;
         else
             return false;

@@ -117,7 +117,6 @@ public class RulesModuleFactory {
 				String[] dataArray = csvLine.split(";");
 				List<String> countryCodes = Arrays.asList(Arrays.copyOfRange(dataArray, 1, dataArray.length));
 				countriesByZone.put(dataArray[0], countryCodes);
-				zoneNameList.add(dataArray[0]);
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException("Error in reading CSV file: " + ex);
@@ -135,6 +134,7 @@ public class RulesModuleFactory {
 				List<Integer> milesNeededList = new LinkedList<>();
 				for(String value : milesNeededListString) milesNeededList.add(Integer.valueOf(value));
 				milesTable.put(dataArray[0], milesNeededList);
+				zoneNameList.add(dataArray[0]);
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException("Error in reading CSV file: " + ex);

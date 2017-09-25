@@ -74,7 +74,7 @@ public abstract class AbstractAirports {
 		namesByCountry.put(countryByCode.get(countryKey), nameByCountry);
 	}
 
-	private AirportsData getAirportByName(String airportName) {
+	protected AirportsData getAirportByName(String airportName) {
 		return airportByName.get(airportName);
 	}
 

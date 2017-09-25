@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 import pl.robertsadlowski.awardroutes.app.logic.Container;
 
-public class MMZoneFilter implements IZoneFilter {
+public class ZoneFilterMilesMore implements IZoneFilter {
 
 	private int size;
 	private FormChoosen formChoosen;
@@ -18,7 +18,7 @@ public class MMZoneFilter implements IZoneFilter {
 	private String endZone;
 	private List<Set<String>> zoneCalculation = new ArrayList<Set<String>>(Collections.<Set<String>>emptyList());
 	
-	public MMZoneFilter (IRulesModule rulesModule) {
+	public ZoneFilterMilesMore(IRulesModule rulesModule) {
 		this.rulesModule = rulesModule;
 	}
 

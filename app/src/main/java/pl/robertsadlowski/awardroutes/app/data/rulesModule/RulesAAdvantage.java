@@ -83,7 +83,7 @@ public class RulesAAdvantage implements IRulesModule {
     }
 
     public IZoneFilter getZoneFilterInstance() {
-        return new MMZoneFilter(this);
+        return new ZoneFilterMilesMore(this);
     }
 
     public String getMessage(int size, int mileageNeeded, String zoneStart, String zoneEnd) {
