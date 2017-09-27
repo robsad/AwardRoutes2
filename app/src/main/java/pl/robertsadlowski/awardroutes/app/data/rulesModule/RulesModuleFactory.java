@@ -57,6 +57,7 @@ public class RulesModuleFactory {
 		loadZonesFromFile("aadvantage");
 		loadTableFromFile("aadvantage");
 		loadConnectionsFromFile("one_world");
+		loadConnectionsFromFile("aadvantage");
 		loadAirportsDataFromFile("one_world");
 	}
 
