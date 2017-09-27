@@ -21,25 +21,27 @@ public class RulesAAdvantage implements IRulesModule {
     private Map<String, String> zoneByCountryName = new HashMap<>();
     private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
     private Map<String, List<Integer>> milesTable;
+    private Map<String, String> milesTableDomestic;
     private Map<String,String> airlines = new HashMap<>();
     private AbstractAirports airports;
 
     public RulesAAdvantage(Map<String, List<Connection>> connectionsByOrigin,
-                          List<AirportsData> airportsData,
-                          Map<String, String> countryByCode,
-                          List<String> zoneNameList,
-                          Map<String, List<String>> countriesByZone,
-                          Map<String, List<Integer>> milesTable,
-                          Map<String,String> airlines
+                           List<AirportsData> airportsData,
+                           Map<String, String> countryByCode,
+                           List<String> zoneNameList,
+                           Map<String, List<String>> countriesByZone,
+                           Map<String, List<Integer>> milesTable,
+                           Map<String, String> milesTableDomestic,
+                           Map<String,String> airlines
     ) {
         this.connectionsByOrigin = connectionsByOrigin;
         this.countriesByZone = countriesByZone;
         this.milesTable = milesTable;
+        this.milesTableDomestic = milesTableDomestic;
         this.zoneNameList = zoneNameList;
         this.airlines = airlines;
         airports = new AirportsAAdvantage(countryByCode);
         airports.setTranslatedAirports(airportsData);
-        System.out.println("airports:" + airports);
         makeZoneByCountryMap(countriesByZone);
 
     }

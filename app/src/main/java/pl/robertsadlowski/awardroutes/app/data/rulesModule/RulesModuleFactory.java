@@ -24,6 +24,7 @@ public class RulesModuleFactory {
 	private List<String> zoneNameList = new ArrayList<>();
 	private Map<String, List<String>> countriesByZone = new HashMap<>();
 	private Map<String, List<Integer>> milesTable = new HashMap<>();
+	private Map<String, String> milesTableDomestic = new HashMap<>();
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 	private List<AirportsData> airportsData = new ArrayList<>();
 
@@ -35,10 +36,10 @@ public class RulesModuleFactory {
 		switch(programmeName){
 			case "MilesMore":
 				initMilesMore(countryByCode);
-				return new RulesMilesMore(connectionsByOrigin,airportsData,countryByCode,zoneNameList,countriesByZone,milesTable,airlines);
+				return new RulesMilesMore(connectionsByOrigin,airportsData,countryByCode,zoneNameList,countriesByZone,milesTable,milesTableDomestic,airlines);
 			case "AAdvantage":
 				initAAdvantage(countryByCode);
-				return new RulesAAdvantage(connectionsByOrigin,airportsData,countryByCode,zoneNameList,countriesByZone,milesTable,airlines);
+				return new RulesAAdvantage(connectionsByOrigin,airportsData,countryByCode,zoneNameList,countriesByZone,milesTable,milesTableDomestic,airlines);
 			default:
 				System.out.println("Not implemented module");
 		}
@@ -130,11 +131,16 @@ public class RulesModuleFactory {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			while ((csvLine = br.readLine()) != null) {
 				String[] dataArray = csvLine.split(";");
-				List<String> milesNeededListString = Arrays.asList(Arrays.copyOfRange(dataArray, 1, dataArray.length));
-				List<Integer> milesNeededList = new LinkedList<>();
-				for(String value : milesNeededListString) milesNeededList.add(Integer.valueOf(value));
-				milesTable.put(dataArray[0], milesNeededList);
-				zoneNameList.add(dataArray[0]);
+				if (!dataArray[0].equals("domestic")) {
+					List<String> milesNeededListString = Arrays.asList(Arrays.copyOfRange(dataArray, 1, dataArray.length));
+					List<Integer> milesNeededList = new LinkedList<>();
+					for (String value : milesNeededListString)
+						milesNeededList.add(Integer.valueOf(value));
+					milesTable.put(dataArray[0], milesNeededList);
+					zoneNameList.add(dataArray[0]);
+				} else {
+					milesTableDomestic.put(dataArray[1], dataArray[2]);
+				}
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException("Error in reading CSV file: " + ex);

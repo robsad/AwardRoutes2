@@ -6,14 +6,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import pl.robertsadlowski.awardroutes.R;
-import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
-import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
 
 import static pl.robertsadlowski.awardroutes.R.raw.airlines;
 

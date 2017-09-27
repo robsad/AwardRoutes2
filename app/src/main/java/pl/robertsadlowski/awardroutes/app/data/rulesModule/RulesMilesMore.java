@@ -21,6 +21,7 @@ public class RulesMilesMore implements IRulesModule {
 	private Map<String, String> zoneByCountryName = new HashMap<>();
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 	private Map<String, List<Integer>> milesTable;
+	private Map<String, String> milesTableDomestic;
 	private Map<String,String> airlines = new HashMap<>();
 	private AirportsMilesMore airports;
 	private IZoneFilter zoneFilter;
@@ -31,11 +32,13 @@ public class RulesMilesMore implements IRulesModule {
 						  List<String> zoneNameList,
 						  Map<String, List<String>> countriesByZone,
 						  Map<String, List<Integer>> milesTable,
+						  Map<String, String> milesTableDomestic,
 						  Map<String,String> airlines
 	) {
 		this.connectionsByOrigin = connectionsByOrigin;
 		this.countriesByZone = countriesByZone;
 		this.milesTable = milesTable;
+		this.milesTableDomestic = milesTableDomestic;
 		this.zoneNameList = zoneNameList;
 		this.airlines = airlines;
 		airports = new AirportsMilesMore(countryByCode);
