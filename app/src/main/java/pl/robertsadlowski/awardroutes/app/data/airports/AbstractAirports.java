@@ -57,6 +57,10 @@ public abstract class AbstractAirports {
 		return countryByCode.get(countryCode);
 	}
 
+	public AirportsData getAirportByName(String airportName) {
+		return airportByName.get(airportName);
+	}
+
 	protected void makeCountryMap(AirportsData airport) {
 		List<AirportsData> airportByCountry;
 		Set<String> nameByCountry;
@@ -72,10 +76,6 @@ public abstract class AbstractAirports {
 		airportsByCountry.put(countryKey, airportByCountry);
 		nameByCountry.add(airport.getCityName()+","+airport.getCountryCode());
 		namesByCountry.put(countryByCode.get(countryKey), nameByCountry);
-	}
-
-	protected AirportsData getAirportByName(String airportName) {
-		return airportByName.get(airportName);
 	}
 
 }

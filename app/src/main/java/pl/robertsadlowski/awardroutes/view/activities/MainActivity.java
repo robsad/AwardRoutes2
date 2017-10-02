@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import pl.robertsadlowski.awardroutes.app.gateaway.FormPossibles;
 import pl.robertsadlowski.awardroutes.app.logic.Container;
 import pl.robertsadlowski.awardroutes.app.logic.ContainerManager;
 import pl.robertsadlowski.awardroutes.view.adapters.CustomMainListAdapter;
+import pl.robertsadlowski.awardroutes.view.map.WorldMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Container container;
     private FormChoosen formChoosen;
     private FormPossibles formPossibles;
+    private WorldMap mapa;
 
 
 
@@ -146,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
         initCountainer(4);
     }
 
+    private void initMap(Resources resources) {
+        mapa = new WorldMap();
+        LinearLayout mapaLayout = (LinearLayout) findViewById(R.id.world_map);
+        mapa.initMap(mapaLayout, resources, countainerSize, containerManager.getAirportsModule());
+    }
+
     private void getCountainerManager(String programmeName) {
         toolbar.setSubtitle("for " +  programmeName + " Programme");
         containerManager = application.getContainerManager(programmeName);
@@ -161,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         formPossibles = container.calculateRoutes(formChoosen);
         buttonZoneStart.setText("Select start zone");
         buttonZoneEnd.setText("Select end zone");
+        initMap(getResources());  //mapa
         formsUpdate();
     }
 
@@ -169,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         CustomMainListAdapter adapter = new CustomMainListAdapter(this, arrayOfUsers, formPossibles);
         listView.setAdapter(adapter);
         updateMileage();
+        mapa.setAirportOnMap(formChoosen,formPossibles); //mapa
     }
 
     private void updateMileage() {

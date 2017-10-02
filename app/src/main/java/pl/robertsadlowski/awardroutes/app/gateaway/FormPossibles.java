@@ -47,8 +47,8 @@ public class FormPossibles {
 	}
 
 	public Set<String> getAirports(int i) {
-		return possiblePorts.get(i);
-	}
+        return possiblePorts.get(i);
+    }
 
 	public void setCountries(int i, Set<String> countries) {
 		possibleCountries.set(i, countries);
