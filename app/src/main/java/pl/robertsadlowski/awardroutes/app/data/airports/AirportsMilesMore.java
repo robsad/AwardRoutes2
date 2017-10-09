@@ -5,7 +5,7 @@ import java.util.Map;
 
 import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
 
-public class AirportsMilesMore extends AbstractAirports {
+public class AirportsMilesMore extends Airports {
 
 
     public AirportsMilesMore(Map<String, String> countryByCode) {

@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pl.robertsadlowski.awardroutes.app.data.airports.AbstractAirports;
-import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
-import pl.robertsadlowski.awardroutes.app.data.rulesModule.IZoneFilter;
+import pl.robertsadlowski.awardroutes.app.data.airports.Airports;
+import pl.robertsadlowski.awardroutes.app.data.rulesModule.MileageLevels;
+import pl.robertsadlowski.awardroutes.app.data.rulesModule.RulesModule;
+import pl.robertsadlowski.awardroutes.app.data.rulesModule.ZoneFilter;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormPossibles;
 
@@ -17,11 +18,11 @@ public class Container {
 	public static final String ANY_COUNTRY = "Any country";
 	public static final String ANY_ZONE = "Any zone";
 	private List<RouteLine> routeLines = new ArrayList<>();
-	private IRulesModule rulesModule;
-	private AbstractAirports airports;
+	private RulesModule rulesModule;
+	private Airports airports;
 	private final int size;
 
-	public Container(int size, IRulesModule rulesModule) {
+	public Container(int size, RulesModule rulesModule) {
 		this.size = size;
 		this.rulesModule = rulesModule;
 		this.airports = rulesModule.getAirports();
@@ -32,16 +33,14 @@ public class Container {
 	}
 
 	public FormPossibles calculateRoutes(FormChoosen formChoosen) {
-		IZoneFilter zonefilter = rulesModule.getZoneFilterInstance();
-		List<Set<String>> zoneCalculated = zonefilter
-				.calculateZones(formChoosen);
-		formChoosen.setZoneCalculation(zoneCalculated);
+		ZoneFilter zonefilter = rulesModule.getZoneFilterInstance();
+		zonefilter.calculateZonesAndConfigureFilter(formChoosen);
 		setRouteLines(formChoosen);
 		FormPossibles formPossibles = calculateRoutesIntersections(formChoosen);
-		String zoneStart = zonefilter.getStartZone();
-		String zoneEnd = zonefilter.getEndZone();
-		int mileageNeeded = rulesModule.getMilesNeeded(size, zoneStart,zoneEnd);
+		MileageLevels mileageNeeded = rulesModule.getMilesNeeded(formChoosen);
 		formPossibles.setMileageNeeded(mileageNeeded);
+        String zoneStart = zonefilter.getStartZone();
+        String zoneEnd = zonefilter.getEndZone();
 		formPossibles.setZoneStart(zoneStart);
 		formPossibles.setZoneEnd(zoneEnd);
 		formPossibles.setAirlines(getAirlines(formChoosen));
@@ -52,7 +51,7 @@ public class Container {
 	private void setRouteLines(FormChoosen formChoosen) {
 		routeLines.clear();
 		for (int i = 0; i < size; i++) {
-			routeLines.add(new RouteLine(size, i, formChoosen, rulesModule));
+			routeLines.add(new RouteLine(i, formChoosen, rulesModule));
 		}
 	}
 

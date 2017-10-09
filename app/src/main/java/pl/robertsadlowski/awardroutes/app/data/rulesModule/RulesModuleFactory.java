@@ -23,8 +23,8 @@ public class RulesModuleFactory {
 	private Resources resources;
 	private List<String> zoneNameList = new ArrayList<>();
 	private Map<String, List<String>> countriesByZone = new HashMap<>();
-	private Map<String, List<Integer>> milesTable = new HashMap<>();
-	private Map<String, String> milesTableDomestic = new HashMap<>();
+	private Map<String, List<MileageLevels>> milesTable = new HashMap<>();
+	private Map<String, MileageLevels> milesTableDomestic = new HashMap<>();
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 	private List<AirportsData> airportsData = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class RulesModuleFactory {
 		this.resources = resources;
 	}
 
-	public IRulesModule getModule(String programmeName, Map<String, String> countryByCode, Map<String,String> airlines) {
+	public RulesModule getModule(String programmeName, Map<String, String> countryByCode, Map<String,String> airlines) {
 		switch(programmeName){
 			case "MilesMore":
 				initMilesMore(countryByCode);
@@ -132,24 +132,27 @@ public class RulesModuleFactory {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			while ((csvLine = br.readLine()) != null) {
 				String[] dataArray = csvLine.split(";");
-				if (!dataArray[0].equals("domestic")) {
-					List<String> milesNeededListString = Arrays.asList(Arrays.copyOfRange(dataArray, 1, dataArray.length));
-					List<Integer> milesNeededList = new LinkedList<>();
-					for (String value : milesNeededListString)
-						milesNeededList.add(Integer.valueOf(value));
-					milesTable.put(dataArray[0], milesNeededList);
-					zoneNameList.add(dataArray[0]);
-				} else {
-					milesTableDomestic.put(dataArray[1], dataArray[2]);
+                String marker = dataArray[0];
+                switch (marker) {
+                    case "header":
+                        break;
+                    case "domestic":
+                        String country = dataArray[1].toUpperCase();
+                        milesTableDomestic.put(country, new MileageLevels(dataArray[3],dataArray[4]));
+                        break;
+                    default:
+                        List<MileageLevels> milesNeededList = new ArrayList<>();
+						for (int i=1;i<dataArray.length;i+=2) {
+							milesNeededList.add(new MileageLevels(dataArray[i],dataArray[i+1]));
+						}
+						milesTable.put(marker, milesNeededList);
+						zoneNameList.add(marker);
 				}
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException("Error in reading CSV file: " + ex);
 		}
 	}
-
-
-
 	
 }
 

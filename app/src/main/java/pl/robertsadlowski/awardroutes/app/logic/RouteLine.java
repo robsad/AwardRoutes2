@@ -7,26 +7,26 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pl.robertsadlowski.awardroutes.app.data.airports.AbstractAirports;
+import pl.robertsadlowski.awardroutes.app.data.airports.Airports;
 import pl.robertsadlowski.awardroutes.app.data.entities.Connection;
-import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
+import pl.robertsadlowski.awardroutes.app.data.rulesModule.RulesModule;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 
 public class RouteLine {
 
 	private final List<Set<String>> routeLineList = new ArrayList<>();
 	private final Map<String, List<Connection>> connectionsByOrigin;
-	private final IRulesModule rulesModule;
-	private final AbstractAirports abstractAirports;
+	private final RulesModule rulesModule;
+	private final Airports airports;
 	private final FormChoosen formChoosen;
 	private final int size;
 	private final int routeNr;
 
-	public RouteLine(int size, int routeNr, FormChoosen formChoosen, IRulesModule rulesModule) {
-		this.size = size;
+	public RouteLine(int routeNr, FormChoosen formChoosen, RulesModule rulesModule) {
+		this.size = formChoosen.getSize();
 		this.routeNr = routeNr;
 		this.formChoosen = formChoosen;
-		this.abstractAirports = rulesModule.getAirports();
+		this.airports = rulesModule.getAirports();
 		this.rulesModule = rulesModule;
 		this.connectionsByOrigin = rulesModule.getConnectionsByOrigin();
 		init();
@@ -37,7 +37,7 @@ public class RouteLine {
 	}
 
 	public boolean isRouteLineActive() {
-		//System.out.println("!!!routeLineList: "+routeNr+ " "+!routeLineList.isEmpty() + " " + routeLineList);
+		//log.i("!!!routeLineList: "+routeNr+ " "+!routeLineList.isEmpty() + " " + routeLineList);
 		if (routeLineList.isEmpty()) return false;
 		return true;
 	}
@@ -61,7 +61,7 @@ public class RouteLine {
 		}
 		String choosenCountry = formChoosen.getCountry(routeNr);
 		if (!choosenCountry.equals(Container.ANY_COUNTRY)) {
-			return abstractAirports.getAirportsByCountry(choosenCountry);
+			return airports.getAirportsByCountry(choosenCountry);
 		}
 		String zone="";
 		if ((routeNr==0)&&(!formChoosen.getStartZone().equals(Container.ANY_ZONE))) zone = formChoosen.getStartZone();
@@ -97,11 +97,11 @@ public class RouteLine {
 	private Set<String> calculateNeighbors(Set<String> initAirportNames) {
 		Set<String> neighbors = new TreeSet<>();
 		for(String initAirportName : initAirportNames) {
-			String initAirportCode = abstractAirports.getAirportCodeByName(initAirportName);
+			String initAirportCode = airports.getAirportCodeByName(initAirportName);
 			List<Connection> connections = connectionsByOrigin.get(initAirportCode);
 			if (connections!=null) {
 				for (Connection connection : connections) {
-					String connectionName = abstractAirports.getAirportNameByCode(connection.getDestination());
+					String connectionName = airports.getAirportNameByCode(connection.getDestination());
 					neighbors.add(connectionName);
 				}
 			}

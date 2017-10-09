@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import java.util.Map;
 
 import pl.robertsadlowski.awardroutes.app.data.DataLoader;
-import pl.robertsadlowski.awardroutes.app.data.rulesModule.IRulesModule;
+import pl.robertsadlowski.awardroutes.app.data.rulesModule.RulesModule;
 import pl.robertsadlowski.awardroutes.app.data.rulesModule.RulesModuleFactory;
 import pl.robertsadlowski.awardroutes.app.logic.ContainerManager;
 
@@ -25,7 +25,7 @@ public class Application {
     public ContainerManager getContainerManager(String programmeName)
     {
     	RulesModuleFactory rulesFactory = new RulesModuleFactory(resources);
-    	IRulesModule rulesModule = rulesFactory.getModule(programmeName, countryByCode, airlines);
+    	RulesModule rulesModule = rulesFactory.getModule(programmeName, countryByCode, airlines);
 		ContainerManager containerManager = new ContainerManager(rulesModule);
 		return containerManager;
     }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
 
-public class AirportsAAdvantage extends AbstractAirports {
+public class AirportsAAdvantage extends Airports {
 
     public AirportsAAdvantage(Map<String, String> countryByCode) {
         super(countryByCode);

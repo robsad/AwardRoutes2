@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 import pl.robertsadlowski.awardroutes.app.data.entities.AirportsData;
 
-public abstract class AbstractAirports {
+public abstract class Airports {
 
 	protected Map<String, String> airportNameByCode = new HashMap<>();
 	protected Map<String, AirportsData> airportByName = new HashMap<>();
@@ -19,7 +19,7 @@ public abstract class AbstractAirports {
 	private Map<String, Set<String>> namesByCountry = new HashMap<>();
 	private Map<String, String> countryByCode = new HashMap<>();
 
-	public AbstractAirports(Map<String, String> countryByCode){
+	public Airports(Map<String, String> countryByCode){
 		this.countryByCode = countryByCode;
 	}
 

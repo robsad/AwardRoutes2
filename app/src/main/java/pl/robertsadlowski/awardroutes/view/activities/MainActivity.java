@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -151,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initMap(Resources resources) {
         mapa = new WorldMap();
-        LinearLayout mapaLayout = (LinearLayout) findViewById(R.id.world_map);
-        mapa.initMap(mapaLayout, resources, countainerSize, containerManager.getAirportsModule());
+        //LinearLayout mapaLayout = (LinearLayout) findViewById(R.id.world_map);
+        ImageView img=(ImageView)findViewById(R.id.imageWorldMap);
+        mapa.initMap(img, resources, countainerSize, containerManager.getAirportsModule());
     }
 
     private void getCountainerManager(String programmeName) {
@@ -188,11 +190,14 @@ public class MainActivity extends AppCompatActivity {
         if (formPossibles.getMessage()!=null) {
             showToast(formPossibles.getMessage());
         }
-        if (formPossibles.getMileageNeeded()>0) {
-            textMileage.setText("You will need " + String.valueOf(formPossibles.getMileageNeeded()) + " miles for one way trip (eco)");
-        } else {
-            textMileage.setText("Select route to know how many miles you need");
+        int milesY = formPossibles.getMileageNeeded().getY()*500;
+        int milesC = formPossibles.getMileageNeeded().getC()*500;
+        String message = "Select route to know how many miles you need";
+        if (milesY>0) {
+            message = "Required one way miles: " + milesY + "(Y)";
+            if (milesC>0) message = message + ", " + milesC + "(C)";
         }
+        textMileage.setText(message);
     }
 
     private void showToast(String toast) {

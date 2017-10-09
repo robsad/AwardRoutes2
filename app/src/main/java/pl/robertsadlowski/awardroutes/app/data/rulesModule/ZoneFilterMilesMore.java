@@ -9,26 +9,26 @@ import java.util.TreeSet;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormChoosen;
 import pl.robertsadlowski.awardroutes.app.logic.Container;
 
-public class ZoneFilterMilesMore implements IZoneFilter {
+public class ZoneFilterMilesMore implements ZoneFilter {
 
 	private int size;
 	private FormChoosen formChoosen;
-	private IRulesModule rulesModule;
+	private RulesModule rulesModule;
 	private String startZone;
 	private String endZone;
 	private List<Set<String>> zoneCalculation = new ArrayList<Set<String>>(Collections.<Set<String>>emptyList());
 	
-	public ZoneFilterMilesMore(IRulesModule rulesModule) {
+	public ZoneFilterMilesMore(RulesModule rulesModule) {
 		this.rulesModule = rulesModule;
 	}
 
-	public List<Set<String>> calculateZones(FormChoosen formChoosen) {
+	public void calculateZonesAndConfigureFilter(FormChoosen formChoosen) {
 		this.size = formChoosen.getSize();
 		this.startZone = formChoosen.getStartZone();
 		this.endZone = formChoosen.getEndZone();
 		this.formChoosen = formChoosen;
 		zoneScan();
-		return zoneCalculation;
+		formChoosen.setZoneCalculation(zoneCalculation);
 	}
 
 	public String getStartZone() {

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pl.robertsadlowski.awardroutes.app.data.rulesModule.MileageLevels;
+
 public class FormPossibles {
 
 	private final int size;
@@ -12,7 +14,7 @@ public class FormPossibles {
 	private List<Set<String>> possibleCountries = new ArrayList<>();
 	private List<Set<String>> possibleZones = new ArrayList<>();
 	private List<String> airlinesList = new ArrayList<>();
-	private int mileageNeeded;
+	private MileageLevels mileageLevels;
 	private String zoneStart;
 	private String zoneEnd;
 	private String message=null;
@@ -66,9 +68,9 @@ public class FormPossibles {
 		return possibleZones.get(i);
 	}
 
-	public void setMileageNeeded(int i) {this.mileageNeeded = i;}
+	public void setMileageNeeded(MileageLevels mileageLevels) {this.mileageLevels = mileageLevels;}
 
-	public int getMileageNeeded() { return mileageNeeded;}
+	public MileageLevels getMileageNeeded() { return mileageLevels;}
 
 	public void setAirlines(List<String> airlinesList) {
 		this.airlinesList = airlinesList;

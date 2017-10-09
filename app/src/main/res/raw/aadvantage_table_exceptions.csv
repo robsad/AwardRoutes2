@@ -1,10 +1,11 @@
+from;to;byZone;ByAirport;ByAirline
 48 US states;Middle East;Europe;ALL;ALL
 48 US states;Indian Subcontinent;Europe;ALL;ALL
 48 US states;Africa;Europe;ALL;ALL
 48 US states;Africa;Middle East;Doha;QR
 48 US states;Asia2;Asia1;ALL;ALL
 48 US states;Indian Subcontinent;Asia2;HongKong;ALL
-South America 2;Asia1;Asia2;Asia2;ALL;ALL
+South America 2;Asia1;Asia2;ALL;ALL
 South America 2;Asia1;Middle East;Doha;QR
 Europe;Asia1;Asia2;ALL;ALL
 Europe;Asia1;Middle East;Doha;QR
