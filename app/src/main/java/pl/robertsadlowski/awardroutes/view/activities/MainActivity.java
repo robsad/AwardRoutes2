@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +33,9 @@ import pl.robertsadlowski.awardroutes.view.map.WorldMap;
 public class MainActivity extends AppCompatActivity {
 
     private final int REQEST_CODE = 1;
+    private final String MILESMORE = "Miles&More";
+    private final String AADVANTAGE = "AAdvatage";
+    private String mode = MILESMORE;
     private Toolbar toolbar;
     private ListView listView;
     private Button buttonZoneStart;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Award Routes Finder");
         }
-        toolbar.setSubtitle("for Miles&More Programme");
+        toolbar.setSubtitle("for " + mode + " Programme");
         listView = (ListView) findViewById(R.id.listViewMain);
         LayoutInflater layoutinflater = getLayoutInflater();
         ViewGroup footerView = (ViewGroup)layoutinflater.inflate(R.layout.list_view_footer,listView,false);
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void logicStartConfiguration(Resources resources) {
         application = new Application(resources);
-        getCountainerManager("MilesMore");
+        containerManager = getCountainerManager("MilesMore");
         initCountainer(4);
     }
 
@@ -157,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         mapa.initMap(img, resources, countainerSize, containerManager.getAirportsModule());
     }
 
-    private void getCountainerManager(String programmeName) {
+    private ContainerManager getCountainerManager(String programmeName) {
         toolbar.setSubtitle("for " +  programmeName + " Programme");
-        containerManager = application.getContainerManager(programmeName);
+        return application.getContainerManager(programmeName);
     }
 
     private void initCountainer(int size) {
@@ -206,7 +208,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        if (mode.equals(MILESMORE)) {
+            getMenuInflater().inflate(R.menu.menu_mm, menu);
+            return true;
+        }
+        if (mode.equals(AADVANTAGE)) {
+            getMenuInflater().inflate(R.menu.menu_aa, menu);
+            return true;
+        }
+        getMenuInflater().inflate(R.menu.menu_mm, menu);
         return true;
     }
 
@@ -227,12 +237,16 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_MMmode) {
-            getCountainerManager("MilesMore");
+            mode = MILESMORE;
+            containerManager = getCountainerManager("MilesMore");
+            invalidateOptionsMenu();
             initCountainer(4);
             return true;
         }
         if (id == R.id.action_AAmode) {
-            getCountainerManager("AAdvantage");
+            mode = AADVANTAGE;
+            containerManager = getCountainerManager("AAdvantage");
+            invalidateOptionsMenu();
             initCountainer(4);
             return true;
         }

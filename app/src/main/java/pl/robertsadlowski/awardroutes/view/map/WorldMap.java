@@ -24,7 +24,7 @@ public class WorldMap {
 
     private Canvas canvas;
     private Paint paint;
-    private Bitmap tlo;
+    private Bitmap background;
     private Bitmap bg;
     private Airports airports;
     private int countainerSize;
@@ -38,19 +38,10 @@ public class WorldMap {
         this.countainerSize = countainerSize;
         this.airports=airports;
         paint = new Paint();
-        tlo = BitmapFactory.decodeResource(res, R.drawable.world);
-        //int height = tlo.getHeight();
-        //int width = tlo.getWidth();
-        //double y = Math.sqrt(400000 / (((double) width) / height));
-        //double x = (y / height) * width;
-        //Bitmap scaledBitmap = Bitmap.createScaledBitmap(tlo, (int) x, (int) y, true);
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(tlo, d, h, true);
-        tlo.recycle();
-        tlo = scaledBitmap;
+        Bitmap backgroundResource = BitmapFactory.decodeResource(res, R.drawable.world);
+        background = Bitmap.createScaledBitmap(backgroundResource, d, h, true);
         bg = Bitmap.createBitmap(d, h, Bitmap.Config.ARGB_8888);
-        // bg = tlo.copy(Bitmap.Config.ARGB_8888, true);
         canvas = new Canvas(bg);
-        //ll.setBackground(new BitmapDrawable(res, bg));
         img.setImageBitmap(bg);
     }
 
@@ -98,7 +89,7 @@ public class WorldMap {
     }
 
     private int convertLat(double lat) {
-        int y =  (int) (((hfix/180.0) * (90 - lat))-4);
+        int y =  (int) (((hfix/180.0) * (90 - lat))-2);
         return y;
     }
 
@@ -106,7 +97,7 @@ public class WorldMap {
         Paint clearPaint = new Paint();
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         canvas.drawRect(0,0,d,h,clearPaint);
-        canvas.drawBitmap(tlo, 0, 0, null);
+        canvas.drawBitmap(background, 0, 0, null);
     }
 
 }

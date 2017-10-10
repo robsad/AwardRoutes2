@@ -40,7 +40,9 @@ public abstract class Airports {
 	}
 
 	public String getAirportNameByCode(String airportCode) {
-		return airportNameByCode.get(airportCode);
+		String airportName = airportNameByCode.get(airportCode);
+		if (airportName==null) System.out.println(airportCode);
+		return airportName;
 	}
 
 	public String getAirportsCountryCode(String airport) {

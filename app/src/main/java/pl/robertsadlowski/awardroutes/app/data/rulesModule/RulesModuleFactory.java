@@ -59,6 +59,7 @@ public class RulesModuleFactory {
 		loadConnectionsFromFile("one_world");
 		loadConnectionsFromFile("aadvantage");
 		loadAirportsDataFromFile("one_world");
+		loadAirportsDataFromFile("aadvantage");
 	}
 
 	private int getId(String resourceName, Class<?> c) {
