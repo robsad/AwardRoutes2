@@ -1,4 +1,4 @@
-package pl.robertsadlowski.awardroutes.web;
+package pl.robertsadlowski.awardroutes.timetableModule.entities;
 
 public class TimetableConnection {
 

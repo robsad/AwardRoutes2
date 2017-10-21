@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import pl.robertsadlowski.awardroutes.R;
-import pl.robertsadlowski.awardroutes.web.TimetableConnection;
+import pl.robertsadlowski.awardroutes.timetableModule.entities.TimetableConnection;
 
 public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
 

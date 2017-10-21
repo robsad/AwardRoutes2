@@ -1,4 +1,4 @@
-package pl.robertsadlowski.awardroutes.web;
+package pl.robertsadlowski.awardroutes.timetableModule.web;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
