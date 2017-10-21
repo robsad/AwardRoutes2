@@ -1,8 +1,9 @@
 package pl.robertsadlowski.awardroutes.timetableModule;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import pl.robertsadlowski.awardroutes.timetableModule.entities.TimetableConnection;
@@ -13,10 +14,9 @@ public class ServiceTrimHTML {
     public List<TimetableConnection> parse(String html) {
         List<TimetableConnection> timetableConnectionList = new ArrayList<>();
         html = trimHeaderFooter(html);
-        String[] array = html.split("<tr class=\"th-l-activebg\" id=\"result-summary-2\">");
-        List<String> timetableRawList = Arrays.asList(array);
-        for(String htmlTimetableConnection : timetableRawList) {
-            parseData(htmlTimetableConnection);
+        String[] array = html.split("<tr class=\"th-l-activebg\" id=\"result-summary");
+        for (int i=1; i<array.length ;i++) {
+            parseData(array[i]);
         }
         return timetableConnectionList;
     }
@@ -35,7 +35,7 @@ public class ServiceTrimHTML {
         for (int i=0; i<array.length ;i++) {
             int cutPostition = array[i].indexOf("<span>");
             //String item = array[i].substring(cutPostition);
-            System.out.println(array[i]);
+            Log.d("span",array[i]);
         }
         return htmlTimetableConnection;
     }

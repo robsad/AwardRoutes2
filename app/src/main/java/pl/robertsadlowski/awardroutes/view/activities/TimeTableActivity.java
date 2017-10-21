@@ -24,13 +24,14 @@ import retrofit2.Response;
 
 public class TimeTableActivity extends AppCompatActivity {
 
-    private ListView listView ;
+    private ListView listView;
     private List<TimetableConnection> timetableList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
+        listView = (ListView) findViewById(R.id.listViewTimetable);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         Intent intent = getIntent();
@@ -38,7 +39,7 @@ public class TimeTableActivity extends AppCompatActivity {
         String destination = intent.getStringExtra("Destination");
 
         RequestBodyCreator requestBodyCreator = new RequestBodyCreator();
-        String body = requestBodyCreator.getRequestBody("POZ","MUC");
+        String body = requestBodyCreator.getRequestBody("POZ", "MUC");
 
         RetrofitService taskService = ServiceGenerator.createService(RetrofitService.class);
         Call<ResponseBody> call = taskService.getHtml(body);
@@ -48,9 +49,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     try {
                         String html = response.body().string();
-                        ServiceTrimHTML serviceTrimHTML = new ServiceTrimHTML();
-                        timetableList = serviceTrimHTML.parse(html);
-                        timetableList.add(new TimetableConnection("POZ","Poznan Lawica","MUC","Monich","Lufthansa","LH3456","1:20","non-stop"));
+                        listViewDataFeed(html);
                     } catch (IOException e) {
                         Log.d("POST html", e.getMessage());
                     }
@@ -63,14 +62,16 @@ public class TimeTableActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d("Error", t.getMessage());
             }
-        } );
-
-        listView = (ListView) findViewById(R.id.listViewTimetable);
-        CustomTimetableAdapter adapter = new CustomTimetableAdapter(this, timetableList);
-        listView.setAdapter(adapter);
+        });
 
     }
 
-
+    private void listViewDataFeed(String rawHTML) {
+        ServiceTrimHTML serviceTrimHTML = new ServiceTrimHTML();
+        timetableList = serviceTrimHTML.parse(rawHTML);
+        timetableList.add(new TimetableConnection("POZ","Poznan Lawica","MUC","Monich","Lufthansa","LH3456","1:20","non-stop"));
+        CustomTimetableAdapter adapter = new CustomTimetableAdapter(this, timetableList);
+        listView.setAdapter(adapter);
+    }
 
 }
