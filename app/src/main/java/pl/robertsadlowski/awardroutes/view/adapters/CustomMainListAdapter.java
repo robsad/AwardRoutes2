@@ -16,6 +16,7 @@ import pl.robertsadlowski.awardroutes.R;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormAirportData;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormPossibles;
 import pl.robertsadlowski.awardroutes.view.activities.SelectAirports;
+import pl.robertsadlowski.awardroutes.view.activities.TimeTableActivity;
 
 
 public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
@@ -83,10 +84,19 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                     ((Activity) context).startActivityForResult(intent,REQEST_CODE);
                 }
             });
+        holder.airlineLeg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                View parentRow = (View) v.getParent();
+                ListView listView = (ListView) parentRow.getParent();
+                final int position = listView.getPositionForView(parentRow)-1;
+                Intent intent = new Intent(context, TimeTableActivity.class);
+                intent.putExtra("Origin","POZ");
+                intent.putExtra("Destination","MUC");
+                ((Activity) context).startActivity(intent);
+            }
+        });
 
         return convertView;
-
-
     }
 
     static class Holder {

@@ -7,4 +7,5 @@
     <string name="action_MMmode">MilesMore mode</string>
     <string name="action_settings">settings</string>
     <string name="title_activity_select_airports">SelectAirports</string>
+    <string name="title_activity_time_table">TimeTableActivity</string>
 </resources>
