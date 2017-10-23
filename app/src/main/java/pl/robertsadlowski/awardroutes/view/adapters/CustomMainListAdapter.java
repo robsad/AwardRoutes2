@@ -90,8 +90,8 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                 ListView listView = (ListView) parentRow.getParent();
                 final int position = listView.getPositionForView(parentRow)-1;
                 Intent intent = new Intent(context, TimeTableActivity.class);
-                intent.putExtra("Origin","POZ");
-                intent.putExtra("Destination","MUC");
+                intent.putExtra("Origin",formPossibles.getChoosenPortsCodes(position));
+                intent.putExtra("Destination",formPossibles.getChoosenPortsCodes(position+1));
                 ((Activity) context).startActivity(intent);
             }
         });

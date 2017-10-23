@@ -39,7 +39,7 @@ public class TimeTableActivity extends AppCompatActivity {
         String destination = intent.getStringExtra("Destination");
 
         RequestBodyCreator requestBodyCreator = new RequestBodyCreator();
-        String body = requestBodyCreator.getRequestBody("POZ", "MUC");
+        String body = requestBodyCreator.getRequestBody(origin,destination);
 
         RetrofitService taskService = ServiceGenerator.createService(RetrofitService.class);
         Call<ResponseBody> call = taskService.getHtml(body);
@@ -69,7 +69,6 @@ public class TimeTableActivity extends AppCompatActivity {
     private void listViewDataFeed(String rawHTML) {
         ServiceTrimHTML serviceTrimHTML = new ServiceTrimHTML();
         timetableList = serviceTrimHTML.parse(rawHTML);
-        timetableList.add(new TimetableConnection("POZ","Poznan Lawica","MUC","Monich","Lufthansa","LH3456","1:20","non-stop"));
         CustomTimetableAdapter adapter = new CustomTimetableAdapter(this, timetableList);
         listView.setAdapter(adapter);
     }

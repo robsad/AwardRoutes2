@@ -45,6 +45,7 @@ public class Container {
 		formPossibles.setZoneEnd(zoneEnd);
 		formPossibles.setAirlines(getAirlines(formChoosen));
 		formPossibles.setMessage(rulesModule.getMessage(size,mileageNeeded,zoneStart,zoneEnd));
+		formPossibles.setChoosenPortsCodes(getCodes(formChoosen));
 		return formPossibles;
 	}
 
@@ -134,6 +135,19 @@ public class Container {
 		}
 		airlines.add("");
 		return airlines;
+	}
+
+	private List<String> getCodes(FormChoosen formChoosen) {
+		List<String> codes = new ArrayList<String>();
+		for (int i = 0; i < size; i++) {
+			String choosenAirport = formChoosen.getAirport(i);
+			if (!choosenAirport.equals(ANY_AIRPORT)) {
+				codes.add(airports.getAirportCodeByName(choosenAirport));
+			} else {
+				codes.add(ANY_AIRPORT);
+			}
+		}
+		return codes;
 	}
 
 }

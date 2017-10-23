@@ -1,8 +1,6 @@
 package pl.robertsadlowski.awardroutes.timetableModule;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +12,11 @@ public class ServiceTrimHTML {
     public List<TimetableConnection> parse(String html) {
         List<TimetableConnection> timetableConnectionList = new ArrayList<>();
         html = trimHeaderFooter(html);
-        String[] array = html.split("<tr class=\"th-l-activebg\" id=\"result-summary");
-        for (int i=1; i<array.length ;i++) {
-            parseData(array[i]);
+        html = html.replace("\n", "").replace("\r", "");
+        String[] arrayItems = html.split("<tr class=\"th-l-activebg\" id=\"result-summary");
+        for (int i=1; i<arrayItems.length ;i++) {
+            TimetableConnection timetableConnection = parseData(arrayItems[i]);
+            timetableConnectionList.add(timetableConnection);
         }
         return timetableConnectionList;
     }
@@ -28,16 +28,55 @@ public class ServiceTrimHTML {
         return html;
     }
 
-    private String parseData(String htmlTimetableConnection) {
-        int startPosition = htmlTimetableConnection.indexOf("<table class=\"dates-of-operation results-details-schedule");
-        htmlTimetableConnection.substring(startPosition);
-        String[] array = htmlTimetableConnection.split("</span>");
-        for (int i=0; i<array.length ;i++) {
-            int cutPostition = array[i].indexOf("<span>");
-            //String item = array[i].substring(cutPostition);
-            Log.d("span",array[i]);
+    private TimetableConnection parseData(String htmlTimetableConnection) {
+        int startPosition = htmlTimetableConnection.indexOf("dates-of-operation results-details-schedule");
+        htmlTimetableConnection.substring(startPosition,htmlTimetableConnection.length());
+        String[] array = htmlTimetableConnection.split("detail-value\">");
+        for (int i=1; i<array.length ;i++) {
+            int cutPostition = array[i].indexOf("</span>");
+            String item = "";
+            if (cutPostition>0) {
+                array[i] = array[i].substring(0,cutPostition);
+            }
+            //Log.d("span item" + i,array[i]);
         }
-        return htmlTimetableConnection;
+        String departureTime = array[1];
+        String arrivalTime = array[2];
+        String originCode = "";
+        String originName = cutHref(array[4]);
+        String destinationCode = "";
+        String destinationName = cutHref(array[5]);
+        String airline = cutAny(cutP(array[6]));
+        String flightNr = "FlightNr: "+array[3];
+        String aircraft = "Aircraft: "+array[9];
+        String duration = "Duration: "+array[16];
+        String distance = "Distance: "+array[15];
+        String stops = "Stops: "+cutP(array[12]);
+
+        TimetableConnection timetableConnection = new TimetableConnection(departureTime,arrivalTime,originCode,originName,destinationCode,destinationName,airline,flightNr,aircraft,duration,distance,stops);
+        return timetableConnection;
     }
 
+    private String cutP(String html) {
+        int startPosition = html.indexOf(">");
+        int endPosition = html.indexOf("</");
+        html = html.substring(startPosition+1, endPosition);
+        return html;
+    }
+
+    private String cutHref(String html) {;
+        int endPosition = html.indexOf("<a");
+        html = html.substring(0, endPosition);
+        html = html.replace("<small>&lrm;","");
+        html = html.replace("&lrm;</small>","");
+        return html;
+    }
+
+    private String cutAny(String html) {;
+        int endPosition = html.indexOf("<");
+        if (endPosition>0) {
+            html = html.substring(0, endPosition);
+        }
+        return html;
+    }
 }

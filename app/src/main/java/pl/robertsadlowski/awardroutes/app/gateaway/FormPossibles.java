@@ -11,6 +11,7 @@ public class FormPossibles {
 
 	private final int size;
 	private List<Set<String>> possiblePorts = new ArrayList<>();
+	private List<String> choosenPortsCodes = new ArrayList<>();
 	private List<Set<String>> possibleCountries = new ArrayList<>();
 	private List<Set<String>> possibleZones = new ArrayList<>();
 	private List<String> airlinesList = new ArrayList<>();
@@ -48,9 +49,17 @@ public class FormPossibles {
 		possiblePorts.set(i, airports);
 	}
 
+	public void setChoosenPortsCodes(List<String> airportCodes) {
+		this.choosenPortsCodes=airportCodes;
+	}
+
+	public String getChoosenPortsCodes(int i) {
+		return choosenPortsCodes.get(i);
+	}
+
 	public Set<String> getAirports(int i) {
-        return possiblePorts.get(i);
-    }
+		return possiblePorts.get(i);
+	}
 
 	public void setCountries(int i, Set<String> countries) {
 		possibleCountries.set(i, countries);
