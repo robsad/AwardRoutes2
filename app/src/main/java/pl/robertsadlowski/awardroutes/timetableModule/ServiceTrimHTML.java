@@ -2,6 +2,7 @@ package pl.robertsadlowski.awardroutes.timetableModule;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import pl.robertsadlowski.awardroutes.timetableModule.entities.TimetableConnection;
@@ -11,6 +12,9 @@ public class ServiceTrimHTML {
 
     public List<TimetableConnection> parse(String html) {
         List<TimetableConnection> timetableConnectionList = new ArrayList<>();
+        if (html.contains("NoResults")) {
+            return Collections.emptyList();
+        }
         html = trimHeaderFooter(html);
         html = html.replace("\n", "").replace("\r", "");
         String[] arrayItems = html.split("<tr class=\"th-l-activebg\" id=\"result-summary");

@@ -15,8 +15,7 @@ import pl.robertsadlowski.awardroutes.R;
 import pl.robertsadlowski.awardroutes.timetableModule.ServiceTrimHTML;
 import pl.robertsadlowski.awardroutes.timetableModule.entities.TimetableConnection;
 import pl.robertsadlowski.awardroutes.timetableModule.web.RequestBodyCreator;
-import pl.robertsadlowski.awardroutes.timetableModule.web.RetrofitService;
-import pl.robertsadlowski.awardroutes.timetableModule.web.ServiceGenerator;
+import pl.robertsadlowski.awardroutes.timetableModule.web.service.TimetableService;
 import pl.robertsadlowski.awardroutes.view.adapters.CustomTimetableAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,12 +36,14 @@ public class TimeTableActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String origin = intent.getStringExtra("Origin");
         String destination = intent.getStringExtra("Destination");
+        String mode = intent.getStringExtra("mode");
 
         RequestBodyCreator requestBodyCreator = new RequestBodyCreator();
         String body = requestBodyCreator.getRequestBody(origin,destination);
 
-        RetrofitService taskService = ServiceGenerator.createService(RetrofitService.class);
-        Call<ResponseBody> call = taskService.getHtml(body);
+        TimetableService timetableService = new TimetableService(mode);
+        Call<ResponseBody> call = timetableService.getCall(body);
+
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

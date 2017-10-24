@@ -16,85 +16,56 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="vertical">
-
                 <TextView
-                    android:id="@+id/timetableDepartureTime"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/timetableTime"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="8:00"
-                    android:textSize="30sp" />
+                    android:gravity="center"
+                    android:text="8:00-9:00"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/timetableOriginName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="center"
                     android:text="POZ - Poznan Lawica"
                     android:textSize="12sp" />
 
-            </LinearLayout>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:textSize="30sp" />
-
-            </LinearLayout>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/timetableArrivalTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12:00"
-                android:textSize="30sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="-"
+            android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/timetableDestinationName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="MUC - Munich Airport"
                     android:textSize="12sp" />
 
-            </LinearLayout>
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Days of operation:"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/timetableDaysOfOperations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Days of operation:"
+            android:gravity="center"
             android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -102,9 +73,8 @@
             android:id="@+id/timetableAirline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:text="Lufthansa"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/timetableFlightNr"
@@ -125,7 +95,6 @@
             android:id="@+id/timetableAircraft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:text="Aircraft: A320"
             android:textSize="12sp" />
 
@@ -133,7 +102,6 @@
             android:id="@+id/timetableDistance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:text="Distance: 1200miles"
             android:textSize="12sp" />
 
@@ -141,7 +109,6 @@
             android:id="@+id/timetableStops"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:text="Stops: non-stop"
             android:textSize="12sp" />
 

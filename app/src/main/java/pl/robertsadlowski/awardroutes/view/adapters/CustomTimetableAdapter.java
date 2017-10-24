@@ -35,8 +35,7 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
 
             holder.originName = (TextView) convertView.findViewById(R.id.timetableOriginName);
             holder.destinationName = (TextView) convertView.findViewById(R.id.timetableDestinationName);
-            holder.departureTime = (TextView) convertView.findViewById(R.id.timetableDepartureTime);
-            holder.arrivalTime = (TextView) convertView.findViewById(R.id.timetableArrivalTime);
+            holder.time = (TextView) convertView.findViewById(R.id.timetableTime);
             holder.duration = (TextView) convertView.findViewById(R.id.timetableDuration);
             holder.airline = (TextView) convertView.findViewById(R.id.timetableAirline);
             holder.flightNr = (TextView) convertView.findViewById(R.id.timetableFlightNr);
@@ -52,8 +51,7 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
         }
         holder.originName.setText(timetableConnection.getOriginCode()+" "+timetableConnection.getOriginName());
         holder.destinationName.setText(timetableConnection.getDestinationCode()+" "+timetableConnection.getDestinationName());
-        holder.departureTime.setText(timetableConnection.getDepartureTime());
-        holder.arrivalTime.setText(timetableConnection.getArrivalTime());
+        holder.time.setText(timetableConnection.getDepartureTime()+"-"+timetableConnection.getArrivalTime());
         holder.duration.setText(timetableConnection.getDuration());
         holder.airline.setText(timetableConnection.getAirline());
         holder.flightNr.setText(timetableConnection.getFlightNr());
@@ -68,8 +66,7 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
     static class Holder {
         TextView originName;
         TextView destinationName;
-        TextView departureTime;
-        TextView arrivalTime;
+        TextView time;
         TextView duration;
         TextView airline;
         TextView flightNr;

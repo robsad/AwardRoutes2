@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import pl.robertsadlowski.awardroutes.R;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormAirportData;
 import pl.robertsadlowski.awardroutes.app.gateaway.FormPossibles;
+import pl.robertsadlowski.awardroutes.view.activities.MainActivity;
 import pl.robertsadlowski.awardroutes.view.activities.SelectAirports;
 import pl.robertsadlowski.awardroutes.view.activities.TimeTableActivity;
 
@@ -90,6 +91,8 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                 ListView listView = (ListView) parentRow.getParent();
                 final int position = listView.getPositionForView(parentRow)-1;
                 Intent intent = new Intent(context, TimeTableActivity.class);
+                MainActivity mainActivity = (MainActivity)context;
+                intent.putExtra("mode",mainActivity.getMode());
                 intent.putExtra("Origin",formPossibles.getChoosenPortsCodes(position));
                 intent.putExtra("Destination",formPossibles.getChoosenPortsCodes(position+1));
                 ((Activity) context).startActivity(intent);

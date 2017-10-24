@@ -32,9 +32,9 @@ import pl.robertsadlowski.awardroutes.view.map.WorldMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String MILESMORE = "Miles&More";
+    public static final String AADVANTAGE = "AAdvatage";
     private final int REQEST_CODE = 1;
-    private final String MILESMORE = "Miles&More";
-    private final String AADVANTAGE = "AAdvatage";
     private String mode = MILESMORE;
     private Toolbar toolbar;
     private ListView listView;
@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    public String getMode() {
+        return mode;
+    }
 
     private void openButtonDialog(String phase){
         AlertDialog.Builder myDialog = new AlertDialog.Builder(MainActivity.this);
