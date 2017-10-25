@@ -1,8 +1,7 @@
-package pl.robertsadlowski.awardroutes.timetableModule;
+package pl.robertsadlowski.awardroutes.timetableModule.web;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import pl.robertsadlowski.awardroutes.timetableModule.entities.TimetableConnection;
@@ -12,9 +11,6 @@ public class ServiceTrimHTML {
 
     public List<TimetableConnection> parse(String html) {
         List<TimetableConnection> timetableConnectionList = new ArrayList<>();
-        if (html.contains("NoResults")) {
-            return Collections.emptyList();
-        }
         html = trimHeaderFooter(html);
         html = html.replace("\n", "").replace("\r", "");
         String[] arrayItems = html.split("<tr class=\"th-l-activebg\" id=\"result-summary");
@@ -38,11 +34,9 @@ public class ServiceTrimHTML {
         String[] array = htmlTimetableConnection.split("detail-value\">");
         for (int i=1; i<array.length ;i++) {
             int cutPostition = array[i].indexOf("</span>");
-            String item = "";
             if (cutPostition>0) {
                 array[i] = array[i].substring(0,cutPostition);
             }
-            //Log.d("span item" + i,array[i]);
         }
         String departureTime = array[1];
         String arrivalTime = array[2];
@@ -56,9 +50,20 @@ public class ServiceTrimHTML {
         String duration = "Duration: "+array[16];
         String distance = "Distance: "+array[15];
         String stops = "Stops: "+cutP(array[12]);
-
-        TimetableConnection timetableConnection = new TimetableConnection(departureTime,arrivalTime,originCode,originName,destinationCode,destinationName,airline,flightNr,aircraft,duration,distance,stops);
+        boolean[] daysOfOperation = getDaysOfOperation(array[0]);
+        TimetableConnection timetableConnection = new TimetableConnection(departureTime,arrivalTime,originCode,originName,destinationCode,destinationName,airline,flightNr,aircraft,duration,distance,stops,daysOfOperation);
         return timetableConnection;
+    }
+
+    private boolean[] getDaysOfOperation(String html) {
+        boolean[] daysOfOperation = {false, false, false, false, false, false, false};
+        String[] array = html.split("</span></td>");
+        for (int i=0; i<7 ;i++) {
+            if (array[i].contains("Available")) {
+                daysOfOperation[i] = true;
+            }
+        }
+        return daysOfOperation;
     }
 
     private String cutP(String html) {

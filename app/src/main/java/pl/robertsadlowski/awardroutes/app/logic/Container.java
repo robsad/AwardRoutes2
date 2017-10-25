@@ -128,9 +128,9 @@ public class Container {
 			String choosenAirportLast = formChoosen.getAirport(i-1);
 			String choosenAirportThis = formChoosen.getAirport(i);
 			if ((!choosenAirportLast.equals(ANY_AIRPORT))&&(!choosenAirportThis.equals(ANY_AIRPORT))) {
-				airlines.add("Flight " + i + " operated by " + rulesModule.getAirline(choosenAirportLast,choosenAirportThis));
+				airlines.add("operated by " + rulesModule.getAirline(choosenAirportLast,choosenAirportThis));
 			} else {
-				airlines.add("Flight " + i );
+				airlines.add("");
 			}
 		}
 		airlines.add("");

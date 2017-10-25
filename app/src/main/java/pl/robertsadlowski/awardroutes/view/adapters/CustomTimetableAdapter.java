@@ -42,14 +42,20 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
             holder.aircraft = (TextView) convertView.findViewById(R.id.timetableAircraft);
             holder.distance = (TextView) convertView.findViewById(R.id.timetableDistance);
             holder.stops = (TextView) convertView.findViewById(R.id.timetableStops);
-            holder.daysOfOperations = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations);
+            holder.dayOfOperations1 = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations1);
+            holder.dayOfOperations2 = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations2);
+            holder.dayOfOperations3 = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations3);
+            holder.dayOfOperations4 = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations4);
+            holder.dayOfOperations5 = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations5);
+            holder.dayOfOperations6 = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations6);
+            holder.dayOfOperations7 = (TextView) convertView.findViewById(R.id.timetableDaysOfOperations7);
 
             convertView.setTag(holder);
         }
         else {
             holder = (Holder) convertView.getTag();
         }
-        holder.originName.setText(timetableConnection.getOriginCode()+" "+timetableConnection.getOriginName());
+        holder.originName.setText(timetableConnection.getOriginCode()+" "+timetableConnection.getOriginName()+" -");
         holder.destinationName.setText(timetableConnection.getDestinationCode()+" "+timetableConnection.getDestinationName());
         holder.time.setText(timetableConnection.getDepartureTime()+"-"+timetableConnection.getArrivalTime());
         holder.duration.setText(timetableConnection.getDuration());
@@ -58,7 +64,14 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
         holder.aircraft.setText(timetableConnection.getAircraft());
         holder.distance.setText(timetableConnection.getDistance());
         holder.stops.setText(timetableConnection.getStops());
-        holder.daysOfOperations.setText("Mon,Tue,Wed,Thu,Fri,Sat,Sun");
+        boolean[] daysOfOperations = timetableConnection.getDaysOfOperations();
+        if (daysOfOperations[0]) holder.dayOfOperations1.setText("OK");
+        if (daysOfOperations[1]) holder.dayOfOperations2.setText("OK");
+        if (daysOfOperations[2]) holder.dayOfOperations3.setText("OK");
+        if (daysOfOperations[3]) holder.dayOfOperations4.setText("OK");
+        if (daysOfOperations[4]) holder.dayOfOperations5.setText("OK");
+        if (daysOfOperations[5]) holder.dayOfOperations6.setText("OK");
+        if (daysOfOperations[6]) holder.dayOfOperations7.setText("OK");
 
         return convertView;
     }
@@ -73,7 +86,13 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
         TextView aircraft;
         TextView distance;
         TextView stops;
-        TextView daysOfOperations;
+        TextView dayOfOperations1;
+        TextView dayOfOperations2;
+        TextView dayOfOperations3;
+        TextView dayOfOperations4;
+        TextView dayOfOperations5;
+        TextView dayOfOperations6;
+        TextView dayOfOperations7;
     }
 
 }

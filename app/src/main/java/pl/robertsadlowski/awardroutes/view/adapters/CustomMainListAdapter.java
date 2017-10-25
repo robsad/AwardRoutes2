@@ -56,7 +56,6 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
         holder.airportNr.setText("AIRPORT " + pos + ":");
         holder.airportName.setText(formAirportData.name);
         holder.airportCountry.setText(formAirportData.country);
-        holder.airlineLeg.setText(formPossibles.getAirline(position));
         holder.airportName.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     View parentRow = (View) v.getParent();
@@ -85,20 +84,25 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                     ((Activity) context).startActivityForResult(intent,REQEST_CODE);
                 }
             });
-        holder.airlineLeg.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                View parentRow = (View) v.getParent();
-                ListView listView = (ListView) parentRow.getParent();
-                final int position = listView.getPositionForView(parentRow)-1;
-                Intent intent = new Intent(context, TimeTableActivity.class);
-                MainActivity mainActivity = (MainActivity)context;
-                intent.putExtra("mode",mainActivity.getMode());
-                intent.putExtra("Origin",formPossibles.getChoosenPortsCodes(position));
-                intent.putExtra("Destination",formPossibles.getChoosenPortsCodes(position+1));
-                ((Activity) context).startActivity(intent);
-            }
-        });
-
+        String airline = formPossibles.getAirline(position);
+        if (airline.equals("")) {
+            holder.airlineLeg.setText("Flight " + pos);
+        } else {
+            holder.airlineLeg.setText("Flight " + pos + ": " + airline + " (timatable ->)");
+            holder.airlineLeg.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    View parentRow = (View) v.getParent();
+                    ListView listView = (ListView) parentRow.getParent();
+                    final int position = listView.getPositionForView(parentRow) - 1;
+                    Intent intent = new Intent(context, TimeTableActivity.class);
+                    MainActivity mainActivity = (MainActivity) context;
+                    intent.putExtra("mode", mainActivity.getMode());
+                    intent.putExtra("Origin", formPossibles.getChoosenPortsCodes(position));
+                    intent.putExtra("Destination", formPossibles.getChoosenPortsCodes(position + 1));
+                    ((Activity) context).startActivity(intent);
+                }
+            });
+        }
         return convertView;
     }
 

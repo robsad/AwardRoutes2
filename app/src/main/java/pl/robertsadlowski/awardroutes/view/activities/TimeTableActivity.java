@@ -4,17 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import pl.robertsadlowski.awardroutes.R;
-import pl.robertsadlowski.awardroutes.timetableModule.ServiceTrimHTML;
 import pl.robertsadlowski.awardroutes.timetableModule.entities.TimetableConnection;
 import pl.robertsadlowski.awardroutes.timetableModule.web.RequestBodyCreator;
+import pl.robertsadlowski.awardroutes.timetableModule.web.ServiceTrimHTML;
 import pl.robertsadlowski.awardroutes.timetableModule.web.service.TimetableService;
 import pl.robertsadlowski.awardroutes.view.adapters.CustomTimetableAdapter;
 import retrofit2.Call;
@@ -25,21 +29,28 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private ListView listView;
     private List<TimetableConnection> timetableList = new ArrayList<>();
+    private TextView headerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
         listView = (ListView) findViewById(R.id.listViewTimetable);
+        LayoutInflater layoutinflater = getLayoutInflater();
+        ViewGroup headerView = (ViewGroup)layoutinflater.inflate(R.layout.list_item_timetable_header,listView,false);
+        listView.addHeaderView(headerView);
+        headerText = (TextView) findViewById(R.id.textTimetableHeader);
+        headerText.setText("Waiting...");
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         Intent intent = getIntent();
         String origin = intent.getStringExtra("Origin");
         String destination = intent.getStringExtra("Destination");
         String mode = intent.getStringExtra("mode");
+        Log.d("Data",getNextMondayDate());
 
         RequestBodyCreator requestBodyCreator = new RequestBodyCreator();
-        String body = requestBodyCreator.getRequestBody(origin,destination);
+        String body = requestBodyCreator.getRequestBody(origin,destination,getNextMondayDate());
 
         TimetableService timetableService = new TimetableService(mode);
         Call<ResponseBody> call = timetableService.getCall(body);
@@ -50,7 +61,13 @@ public class TimeTableActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     try {
                         String html = response.body().string();
-                        listViewDataFeed(html);
+                        if (html.contains("Sorry, an error")) {
+                            errorResponse();
+                        } else if (html.contains("NoResults")) {
+                            noResultResponse();
+                        } else {
+                            listViewDataFeed(html);
+                        }
                     } catch (IOException e) {
                         Log.d("POST html", e.getMessage());
                     }
@@ -72,6 +89,25 @@ public class TimeTableActivity extends AppCompatActivity {
         timetableList = serviceTrimHTML.parse(rawHTML);
         CustomTimetableAdapter adapter = new CustomTimetableAdapter(this, timetableList);
         listView.setAdapter(adapter);
+        headerText.setText("Results for next week:");
+    }
+
+    private void errorResponse() {
+        headerText.setText("Response error");
+    }
+
+    private void noResultResponse() {
+        headerText.setText("no Results");
+    }
+
+    private String getNextMondayDate() {
+        Calendar currentTime = Calendar.getInstance();
+        while( currentTime.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY )
+            currentTime.add( Calendar.DATE, 1 );
+        int thisYear = currentTime.get(Calendar.YEAR);
+        int thisMonth = currentTime.get(Calendar.MONTH)+1;
+        int thisDay = currentTime.get(Calendar.DAY_OF_MONTH);
+        return thisDay + "%2F" + thisMonth + "%2F" + thisYear;
     }
 
 }

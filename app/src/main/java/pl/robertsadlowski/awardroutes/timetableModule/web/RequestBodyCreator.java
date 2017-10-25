@@ -2,7 +2,7 @@ package pl.robertsadlowski.awardroutes.timetableModule.web;
 
 public class RequestBodyCreator {
 
-    public String getRequestBody(String fromCode, String toCode){
+    public String getRequestBody(String fromCode, String toCode, String date){
         return "initialSearch=&" +
                 "returnFlights=&" +
                 "Flights.From=&" +
@@ -15,7 +15,7 @@ public class RequestBodyCreator {
                 "Flights.ToCityId=" + toCode +"&" +
                 "Flights.ToId=" + toCode +"&" +
                 "Flights.ToLocationType=1&" +
-                "Flights.DepartingOn=23%2F10%2F2017&" +
+                "Flights.DepartingOn=" + date + "&" +
                 "Flights.ReturningOn=&" +
                 "Flights.CarrierId=&" +
                 "Flights.Connections=false&" +

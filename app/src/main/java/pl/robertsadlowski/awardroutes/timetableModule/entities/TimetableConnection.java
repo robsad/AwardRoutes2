@@ -16,9 +16,9 @@ public class TimetableConnection {
     private String aircraft;
     private String distance;
     private String stops;
-    private Boolean[] daysOfOperations;
+    private boolean[] daysOfOperations;
 
-    public TimetableConnection(String departureTime, String arrivalTime, String originCode,String originName,String destinationCode,String destinationName,String airline,String flightNr,String aircraft,String duration,String distance,String stops){
+    public TimetableConnection(String departureTime, String arrivalTime, String originCode,String originName,String destinationCode,String destinationName,String airline,String flightNr,String aircraft,String duration,String distance,String stops,boolean[] daysOfOperations){
         this.originCode=originCode;
         this.originName=originName;
         this.destinationCode=destinationCode;
@@ -31,7 +31,7 @@ public class TimetableConnection {
         this.arrivalTime = arrivalTime;
         this.aircraft = aircraft;
         this.distance = distance;
-        daysOfOperations = new Boolean[]{true, true, true, true, true, true, true};
+        this.daysOfOperations = daysOfOperations;
     }
 
     public String getOriginCode() {
@@ -90,7 +90,7 @@ public class TimetableConnection {
         return stops;
     }
 
-    public Boolean[] getDaysOfOperations() {
+    public boolean[] getDaysOfOperations() {
         return daysOfOperations;
     }
 
