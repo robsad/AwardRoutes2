@@ -47,7 +47,7 @@ public class TimeTableActivity extends AppCompatActivity {
         String origin = intent.getStringExtra("Origin");
         String destination = intent.getStringExtra("Destination");
         String mode = intent.getStringExtra("mode");
-        Log.d("Data",getNextMondayDate());
+        Log.d("Timetable Data",getNextMondayDate());
 
         RequestBodyCreator requestBodyCreator = new RequestBodyCreator();
         String body = requestBodyCreator.getRequestBody(origin,destination,getNextMondayDate());
@@ -61,7 +61,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     try {
                         String html = response.body().string();
-                        if (html.contains("Sorry, an error")) {
+                        if (html.contains("an error")) {
                             errorResponse();
                         } else if (html.contains("NoResults")) {
                             noResultResponse();
@@ -70,15 +70,18 @@ public class TimeTableActivity extends AppCompatActivity {
                         }
                     } catch (IOException e) {
                         Log.d("POST html", e.getMessage());
+                        errorResponse();
                     }
                 } else {
                     Log.d("POST Error", "response.isWrong");
+                    errorResponse();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d("Error", t.getMessage());
+                errorResponse();
             }
         });
 
@@ -104,10 +107,13 @@ public class TimeTableActivity extends AppCompatActivity {
         Calendar currentTime = Calendar.getInstance();
         while( currentTime.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY )
             currentTime.add( Calendar.DATE, 1 );
+        currentTime.add( Calendar.DATE, 3 );
         int thisYear = currentTime.get(Calendar.YEAR);
         int thisMonth = currentTime.get(Calendar.MONTH)+1;
+        String month = String.format("%02d",thisMonth);
         int thisDay = currentTime.get(Calendar.DAY_OF_MONTH);
-        return thisDay + "%2F" + thisMonth + "%2F" + thisYear;
+        String day = String.format("%02d",thisDay);
+        return day + "%2F" + month + "%2F" + thisYear;
     }
 
 }
