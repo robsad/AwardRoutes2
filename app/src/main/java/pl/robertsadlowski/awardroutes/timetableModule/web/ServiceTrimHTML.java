@@ -47,7 +47,6 @@ public class ServiceTrimHTML {
         String destinationCode = "";
         String destinationName = cutHref(array[5]);
         String airline = cutAny(cutP(array[6]));
-        Log.d("Airline:",cutAny(cutP(array[6])));
         String flightNr = "FlightNr: "+array[3];
         String aircraft = "Aircraft: "+array[9];
         String duration = "Duration: "+array[16];
@@ -62,7 +61,8 @@ public class ServiceTrimHTML {
         boolean[] daysOfOperation = {false, false, false, false, false, false, false};
         String[] array = html.split("</span></td>");
         for (int i=0; i<7 ;i++) {
-            if (array[i].contains("Available")) {
+            Log.d("HTMLLOG",array[i]);
+            if (array[i].contains(">Available")) {
                 daysOfOperation[i] = true;
             }
         }

@@ -65,6 +65,15 @@ public class WorldMap {
                 putPoint(airportData);
             }
         }
+        for (int i = 1; i < countainerSize; i++) {
+            String choosenAirportNow = formChoosen.getAirport(i);
+            String choosenAirportLast = formChoosen.getAirport(i-1);
+            if ((!choosenAirportNow.equals(Container.ANY_AIRPORT))&&(!choosenAirportLast.equals(Container.ANY_AIRPORT))) {
+                AirportsData startAirportData = airports.getAirportByName(choosenAirportLast);
+                AirportsData endAirportData = airports.getAirportByName(choosenAirportNow);
+                drawArc(startAirportData,endAirportData);
+            }
+        }
     }
 
     private void putPoint(AirportsData airportData){
@@ -74,8 +83,14 @@ public class WorldMap {
         canvas.drawCircle(x, y, 12, paint);
     }
 
-    private void drawArc(AirportsData StartAirportData,AirportsData EndAirportData) {
-
+    private void drawArc(AirportsData startAirportData,AirportsData endAirportData) {
+        int startX = convertLon(startAirportData.getLon());
+        int startY = convertLat(startAirportData.getLat());
+        int stopX = convertLon(endAirportData.getLon());
+        int stopY = convertLat(endAirportData.getLat());
+        paint.setARGB(255, 255, 0, 0);
+        paint.setStrokeWidth(5);
+        canvas.drawLine(startX, startY, stopX, stopY, paint);
     }
 
     private void putPointSmall(AirportsData airportData){

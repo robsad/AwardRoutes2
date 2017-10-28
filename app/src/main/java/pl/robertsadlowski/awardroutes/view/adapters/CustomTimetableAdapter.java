@@ -33,7 +33,6 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
             LayoutInflater vi = LayoutInflater.from(getContext());
             //  (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = vi.inflate(R.layout.list_item_timetable, parent, false);
-
             holder.originName = (TextView) convertView.findViewById(R.id.timetableOriginName);
             holder.destinationName = (TextView) convertView.findViewById(R.id.timetableDestinationName);
             holder.time = (TextView) convertView.findViewById(R.id.timetableTime);
@@ -50,7 +49,6 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
             holder.dayOfOperations5 = (ImageView) convertView.findViewById(R.id.timetableDaysOfOperations_5);
             holder.dayOfOperations6 = (ImageView) convertView.findViewById(R.id.timetableDaysOfOperations_6);
             holder.dayOfOperations7 = (ImageView) convertView.findViewById(R.id.timetableDaysOfOperations_7);
-
             convertView.setTag(holder);
         }
         else {
@@ -73,7 +71,6 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
         if (daysOfOperations[4]) holder.dayOfOperations5.setVisibility(View.VISIBLE);
         if (daysOfOperations[5]) holder.dayOfOperations6.setVisibility(View.VISIBLE);
         if (daysOfOperations[6]) holder.dayOfOperations7.setVisibility(View.VISIBLE);
-
         return convertView;
     }
 
