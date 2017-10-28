@@ -40,8 +40,8 @@ public class ServiceTrimHTML {
                 array[i] = array[i].substring(0,cutPostition);
             }
         }
-        String departureTime = array[1];
-        String arrivalTime = array[2];
+        String departureTime = array[1].replace(" ", "");
+        String arrivalTime = array[2].replace(" ", "");
         String originCode = "";
         String originName = cutHref(array[4]);
         String destinationCode = "";
