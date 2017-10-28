@@ -1,6 +1,8 @@
 package pl.robertsadlowski.awardroutes.timetableModule.web;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class ServiceTrimHTML {
     public List<TimetableConnection> parse(String html) {
         List<TimetableConnection> timetableConnectionList = new ArrayList<>();
         html = trimHeaderFooter(html);
-        html = html.replace("\n", "").replace("\r", "");
+        html = html.replace("\n", "").replace("\r", "").replace("\t", "");
         String[] arrayItems = html.split("<tr class=\"th-l-activebg\" id=\"result-summary");
         for (int i=1; i<arrayItems.length ;i++) {
             TimetableConnection timetableConnection = parseData(arrayItems[i]);
@@ -45,6 +47,7 @@ public class ServiceTrimHTML {
         String destinationCode = "";
         String destinationName = cutHref(array[5]);
         String airline = cutAny(cutP(array[6]));
+        Log.d("Airline:",cutAny(cutP(array[6])));
         String flightNr = "FlightNr: "+array[3];
         String aircraft = "Aircraft: "+array[9];
         String duration = "Duration: "+array[16];

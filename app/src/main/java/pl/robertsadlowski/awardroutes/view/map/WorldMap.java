@@ -7,9 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.Set;
 
@@ -74,6 +72,10 @@ public class WorldMap {
         int y = convertLat(airportData.getLat());
         paint.setARGB(255, 255, 0, 0);
         canvas.drawCircle(x, y, 12, paint);
+    }
+
+    private void drawArc(AirportsData StartAirportData,AirportsData EndAirportData) {
+
     }
 
     private void putPointSmall(AirportsData airportData){

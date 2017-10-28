@@ -6,13 +6,13 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="horizontal">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="3dp"
         android:orientation="vertical">
@@ -44,6 +44,7 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="bottom"
             android:orientation="horizontal">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,19 +56,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Mon"
-                    android:gravity="center"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/timetableDaysOfOperations1"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/timetableDaysOfOperations_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/plane_icon"
+                        android:visibility="invisible" />
+                </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,19 +83,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Tue"
-                    android:gravity="center"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/timetableDaysOfOperations2"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/timetableDaysOfOperations_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/plane_icon"
+                        android:visibility="invisible" />
+                </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,19 +110,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Wed"
-                    android:gravity="center"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/timetableDaysOfOperations3"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/timetableDaysOfOperations_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/plane_icon"
+                        android:visibility="invisible" />
+                </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,19 +137,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Thu"
-                    android:gravity="center"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/timetableDaysOfOperations4"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/timetableDaysOfOperations_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/plane_icon"
+                        android:visibility="invisible" />
+                </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,19 +164,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Fri"
-                    android:gravity="center"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/timetableDaysOfOperations5"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/timetableDaysOfOperations_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/plane_icon"
+                        android:visibility="invisible" />
+                </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,19 +191,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Sat"
-                    android:gravity="center"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/timetableDaysOfOperations6"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/timetableDaysOfOperations_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/plane_icon"
+                        android:visibility="invisible" />
+                </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -187,17 +218,21 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sun"
                     android:gravity="center"
+                    android:text="Sun"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/timetableDaysOfOperations7"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/timetableDaysOfOperations_7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/plane_icon"
+                        android:visibility="invisible" />
+                </LinearLayout>
 
             </LinearLayout>
 
