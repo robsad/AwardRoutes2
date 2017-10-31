@@ -88,9 +88,13 @@ public class WorldMap {
         int startY = convertLat(startAirportData.getLat());
         int stopX = convertLon(endAirportData.getLon());
         int stopY = convertLat(endAirportData.getLat());
+        GeoCoordinates midGeoCoordinates = GreatCircle.getHalfWayLong(startAirportData,endAirportData);
+        int midX = convertLon(midGeoCoordinates.getLon());
+        int midY = convertLat(midGeoCoordinates.getLat());
         paint.setARGB(255, 255, 0, 0);
         paint.setStrokeWidth(5);
-        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        canvas.drawLine(startX, startY, midX, midY, paint);
+        canvas.drawLine(midX, midY, stopX, stopY, paint);
     }
 
     private void putPointSmall(AirportsData airportData){

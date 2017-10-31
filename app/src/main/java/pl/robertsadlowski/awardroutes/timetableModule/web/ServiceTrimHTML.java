@@ -1,8 +1,6 @@
 package pl.robertsadlowski.awardroutes.timetableModule.web;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +59,6 @@ public class ServiceTrimHTML {
         boolean[] daysOfOperation = {false, false, false, false, false, false, false};
         String[] array = html.split("</span></td>");
         for (int i=0; i<7 ;i++) {
-            Log.d("HTMLLOG",array[i]);
             if (array[i].contains(">Available")) {
                 daysOfOperation[i] = true;
             }
