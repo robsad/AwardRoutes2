@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.widget.ImageView;
 
+import java.util.List;
 import java.util.Set;
 
 import pl.robertsadlowski.awardroutes.R;
@@ -84,17 +85,22 @@ public class WorldMap {
     }
 
     private void drawArc(AirportsData startAirportData,AirportsData endAirportData) {
-        int startX = convertLon(startAirportData.getLon());
-        int startY = convertLat(startAirportData.getLat());
-        int stopX = convertLon(endAirportData.getLon());
-        int stopY = convertLat(endAirportData.getLat());
-        GeoCoordinates midGeoCoordinates = GreatCircle.getHalfWayLong(startAirportData,endAirportData);
-        int midX = convertLon(midGeoCoordinates.getLon());
-        int midY = convertLat(midGeoCoordinates.getLat());
         paint.setARGB(255, 255, 0, 0);
         paint.setStrokeWidth(5);
-        canvas.drawLine(startX, startY, midX, midY, paint);
-        canvas.drawLine(midX, midY, stopX, stopY, paint);
+        GreatCircle greatCircle = new GreatCircle();
+        List<GeoCoordinates> path = greatCircle.getGreatCirclePath(startAirportData,endAirportData);
+        GeoCoordinates lastPoint = path.get(0);
+        for (int i=1;i<path.size();i++) {
+            GeoCoordinates thisPoint = path.get(i);
+            if (!(((lastPoint.getLon()>100)&&(thisPoint.getLon()<-100))||((lastPoint.getLon()<-100)&&(thisPoint.getLon()>100)))) {
+                int startX = convertLon(lastPoint.getLon());
+                int startY = convertLat(lastPoint.getLat());
+                int endX = convertLon(thisPoint.getLon());
+                int endY = convertLat(thisPoint.getLat());
+                canvas.drawLine(startX, startY, endX, endY, paint);
+            }
+            lastPoint = thisPoint;
+        }
     }
 
     private void putPointSmall(AirportsData airportData){

@@ -21,10 +21,6 @@ public class GeoCoordinates {
         return lon;
     }
 
-    public double getLonNormalizedTo360(double lon) {
-        return ((lon%360)+360)%360;
-    }
-
     public double getLat() {
         return lat;
     }
