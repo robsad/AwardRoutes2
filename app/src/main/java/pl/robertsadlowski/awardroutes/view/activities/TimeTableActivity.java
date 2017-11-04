@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +31,13 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private ListView listView;
     private List<TimetableConnection> timetableList = new ArrayList<>();
-    private TextView headerText;
     private Toolbar toolbar;
+    private Calendar current;
+    private Calendar minDate;
+    private String origin;
+    private String destination;
+    private String mode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,31 +45,47 @@ public class TimeTableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_time_table);
         listView = (ListView) findViewById(R.id.listViewTimetable);
         LayoutInflater layoutinflater = getLayoutInflater();
-        ViewGroup headerView = (ViewGroup)layoutinflater.inflate(R.layout.list_item_timetable_header,listView,false);
+        ViewGroup headerView = (ViewGroup) layoutinflater.inflate(R.layout.list_item_timetable_header, listView, false);
         listView.addHeaderView(headerView);
-        headerText = (TextView) findViewById(R.id.textTimetableHeader);
-        headerText.setText("Waiting...");
         toolbar = (Toolbar) findViewById(R.id.toolbar_timetable);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Selected Route Timetable");
-            }
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                }
+            }
         });
+        Button buttonPrevWeek = (Button) findViewById(R.id.previos_week);
+        Button buttonNextWeek  = (Button) findViewById(R.id.next_week);
         Intent intent = getIntent();
-        String origin = intent.getStringExtra("Origin");
-        String destination = intent.getStringExtra("Destination");
-        String mode = intent.getStringExtra("mode");
-        Log.d("Timetable Data",getNextMondayDate());
+        origin = intent.getStringExtra("Origin");
+        destination = intent.getStringExtra("Destination");
+        mode = intent.getStringExtra("mode");
+        minDate = getNextMondayDate();
+        current = getNextMondayDate();
+        timetableRequest(origin,destination,mode,current);
+        buttonPrevWeek.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View arg0) {
+                current.add( Calendar.DATE, -7 );
+                timetableRequest(origin,destination,mode,current);
+            }});
+        buttonNextWeek.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View arg0) {
+                current.add( Calendar.DATE, 7 );
+                timetableRequest(origin,destination,mode,current);
+            }});
+    }
 
+    private void timetableRequest(String origin,String destination,String mode,Calendar date) {
         RequestBodyCreator requestBodyCreator = new RequestBodyCreator();
-        String body = requestBodyCreator.getRequestBody(origin,destination,getNextMondayDate());
+        String body = requestBodyCreator.getRequestBody(origin,destination,getFormatedDate(date));
 
         TimetableService timetableService = new TimetableService(mode);
         Call<ResponseBody> call = timetableService.getCall(body);
@@ -81,14 +102,13 @@ public class TimeTableActivity extends AppCompatActivity {
                             noResultResponse();
                         } else {
                             listViewDataFeed(html);
-                            toolbar.setSubtitle(getWeekDate());
                         }
                     } catch (IOException e) {
-                        Log.d("POST html", e.getMessage());
+                        Log.d("xPOST html", e.getMessage());
                         errorResponse();
                     }
                 } else {
-                    Log.d("POST Error", "response.isWrong");
+                    Log.d("xPOST Error", "response.isWrong");
                     errorResponse();
                 }
             }
@@ -99,7 +119,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 errorResponse();
             }
         });
-
+        toolbar.setSubtitle(getWeekDate(date));
     }
 
     private void listViewDataFeed(String rawHTML) {
@@ -107,22 +127,23 @@ public class TimeTableActivity extends AppCompatActivity {
         timetableList = serviceTrimHTML.parse(rawHTML);
         CustomTimetableAdapter adapter = new CustomTimetableAdapter(this, timetableList);
         listView.setAdapter(adapter);
-        headerText.setText("Results for next week:");
     }
 
     private void errorResponse() {
-        headerText.setText("Response error");
     }
 
     private void noResultResponse() {
-        headerText.setText("no Results");
     }
 
-    private String getNextMondayDate() {
+    private Calendar getNextMondayDate() {
         Calendar currentTime = Calendar.getInstance();
         while( currentTime.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY )
             currentTime.add( Calendar.DATE, 1 );
         currentTime.add( Calendar.DATE, 3 );
+        return currentTime;
+    }
+
+    private String getFormatedDate(Calendar currentTime) {
         int thisYear = currentTime.get(Calendar.YEAR);
         int thisMonth = currentTime.get(Calendar.MONTH)+1;
         String month = String.format("%02d",thisMonth);
@@ -131,18 +152,15 @@ public class TimeTableActivity extends AppCompatActivity {
         return day + "%2F" + month + "%2F" + thisYear;
     }
 
-    private String getWeekDate() {
-        Calendar currentTime = Calendar.getInstance();
-        String weekDate;
-        while( currentTime.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY )
-            currentTime.add( Calendar.DATE, 1 );
+    private String getWeekDate(Calendar currentTime) {
+        currentTime.add( Calendar.DATE, -3 );
         int thisMonth = currentTime.get(Calendar.MONTH)+1;
         int thisDay = currentTime.get(Calendar.DAY_OF_MONTH);
-        weekDate = "" + thisDay + thisMonth;
+        String weekDate = "For week: " + thisDay + "." + thisMonth;
         currentTime.add( Calendar.DATE, 6 );
         thisMonth = currentTime.get(Calendar.MONTH)+1;
         thisDay = currentTime.get(Calendar.DAY_OF_MONTH);
-        weekDate = weekDate+thisDay+thisMonth;
+        weekDate = weekDate+" - " +thisDay+"."+thisMonth;
         return weekDate;
     }
 
