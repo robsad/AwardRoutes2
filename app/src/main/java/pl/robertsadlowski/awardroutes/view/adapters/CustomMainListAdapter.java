@@ -103,6 +103,9 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
                 }
             });
         }
+        if (pos==formPossibles.getSize()) {
+            holder.airlineLeg.setText("");
+        }
         return convertView;
     }
 

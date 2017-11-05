@@ -29,6 +29,10 @@ public class FormPossibles {
 		}
 	}
 
+	public int getSize() {
+		return size;
+	}
+
 	public void setZoneStart(String zoneStart) {
 		this.zoneStart = zoneStart;
 	}

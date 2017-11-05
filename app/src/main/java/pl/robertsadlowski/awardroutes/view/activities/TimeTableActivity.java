@@ -31,6 +31,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private ListView listView;
     private List<TimetableConnection> timetableList = new ArrayList<>();
+    private CustomTimetableAdapter adapter;
     private Toolbar toolbar;
     private Calendar current;
     private Calendar minDate;
@@ -73,7 +74,11 @@ public class TimeTableActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 current.add( Calendar.DATE, -7 );
-                timetableRequest(origin,destination,mode,current);
+                if (current.after(minDate)) {
+                    timetableRequest(origin, destination, mode, current);
+                } else {
+                    current.add( Calendar.DATE, 7 );
+                }
             }});
         buttonNextWeek.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -115,7 +120,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("Error", t.getMessage());
+                Log.d("FailureResponseError", t.getMessage());
                 errorResponse();
             }
         });
@@ -125,14 +130,16 @@ public class TimeTableActivity extends AppCompatActivity {
     private void listViewDataFeed(String rawHTML) {
         ServiceTrimHTML serviceTrimHTML = new ServiceTrimHTML();
         timetableList = serviceTrimHTML.parse(rawHTML);
-        CustomTimetableAdapter adapter = new CustomTimetableAdapter(this, timetableList);
+        adapter = new CustomTimetableAdapter(this, timetableList);
         listView.setAdapter(adapter);
     }
 
     private void errorResponse() {
+        adapter.clear();
     }
 
     private void noResultResponse() {
+        adapter.clear();
     }
 
     private Calendar getNextMondayDate() {
