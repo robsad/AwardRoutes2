@@ -64,13 +64,42 @@ public class CustomTimetableAdapter extends ArrayAdapter<TimetableConnection> {
         holder.distance.setText(timetableConnection.getDistance());
         holder.stops.setText(timetableConnection.getStops());
         boolean[] daysOfOperations = timetableConnection.getDaysOfOperations();
-        if (daysOfOperations[0]) holder.dayOfOperations1.setVisibility(View.VISIBLE);
-        if (daysOfOperations[1]) holder.dayOfOperations2.setVisibility(View.VISIBLE);
-        if (daysOfOperations[2]) holder.dayOfOperations3.setVisibility(View.VISIBLE);
-        if (daysOfOperations[3]) holder.dayOfOperations4.setVisibility(View.VISIBLE);
-        if (daysOfOperations[4]) holder.dayOfOperations5.setVisibility(View.VISIBLE);
-        if (daysOfOperations[5]) holder.dayOfOperations6.setVisibility(View.VISIBLE);
-        if (daysOfOperations[6]) holder.dayOfOperations7.setVisibility(View.VISIBLE);
+        String test = "";
+        if (daysOfOperations[0]) {
+            holder.dayOfOperations1.setVisibility(View.VISIBLE);
+        } else {
+            holder.dayOfOperations1.setVisibility(View.INVISIBLE);
+        }
+        if (daysOfOperations[1]) {
+            holder.dayOfOperations2.setVisibility(View.VISIBLE);
+        } else {
+            holder.dayOfOperations2.setVisibility(View.INVISIBLE);
+        }
+        if (daysOfOperations[2]) {
+            holder.dayOfOperations3.setVisibility(View.VISIBLE);
+        } else {
+            holder.dayOfOperations3.setVisibility(View.INVISIBLE);
+        }
+        if (daysOfOperations[3]) {
+            holder.dayOfOperations4.setVisibility(View.VISIBLE);
+        } else {
+            holder.dayOfOperations4.setVisibility(View.INVISIBLE);
+        }
+        if (daysOfOperations[4]) {
+            holder.dayOfOperations5.setVisibility(View.VISIBLE);
+        } else {
+            holder.dayOfOperations5.setVisibility(View.INVISIBLE);
+        }
+        if (daysOfOperations[5]) {
+            holder.dayOfOperations6.setVisibility(View.VISIBLE);
+        } else {
+            holder.dayOfOperations6.setVisibility(View.INVISIBLE);
+        }
+        if (daysOfOperations[6]) {
+            holder.dayOfOperations7.setVisibility(View.VISIBLE);
+        } else {
+            holder.dayOfOperations7.setVisibility(View.INVISIBLE);
+        }
         return convertView;
     }
 

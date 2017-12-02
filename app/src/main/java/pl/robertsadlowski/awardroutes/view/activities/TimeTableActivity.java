@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -30,7 +32,7 @@ import retrofit2.Response;
 public class TimeTableActivity extends AppCompatActivity {
 
     private ListView listView;
-    private List<TimetableConnection> timetableList = new ArrayList<>();
+    private List<TimetableConnection> timetableList;
     private CustomTimetableAdapter adapter;
     private Toolbar toolbar;
     private Calendar current;
@@ -69,6 +71,11 @@ public class TimeTableActivity extends AppCompatActivity {
         mode = intent.getStringExtra("mode");
         minDate = getNextMondayDate();
         current = getNextMondayDate();
+
+        timetableList = new ArrayList<>(Collections.<TimetableConnection>emptyList());
+        adapter = new CustomTimetableAdapter(this, timetableList);
+        listView.setAdapter(adapter);
+
         timetableRequest(origin,destination,mode,current);
         buttonPrevWeek.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -78,6 +85,7 @@ public class TimeTableActivity extends AppCompatActivity {
                     timetableRequest(origin, destination, mode, current);
                 } else {
                     current.add( Calendar.DATE, 7 );
+                    showToast("Not before next week");
                 }
             }});
         buttonNextWeek.setOnClickListener(new View.OnClickListener(){
@@ -98,6 +106,7 @@ public class TimeTableActivity extends AppCompatActivity {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                clearAdapter();
                 if (response.isSuccessful()) {
                     try {
                         String html = response.body().string();
@@ -129,17 +138,21 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private void listViewDataFeed(String rawHTML) {
         ServiceTrimHTML serviceTrimHTML = new ServiceTrimHTML();
-        timetableList = serviceTrimHTML.parse(rawHTML);
-        adapter = new CustomTimetableAdapter(this, timetableList);
-        listView.setAdapter(adapter);
+        timetableList.addAll(serviceTrimHTML.parse(rawHTML));
+        adapter.notifyDataSetChanged();
+    }
+
+    private void clearAdapter() {
+        timetableList.clear();
+        adapter.notifyDataSetChanged();
     }
 
     private void errorResponse() {
-        adapter.clear();
+        showToast("Error Response");
     }
 
     private void noResultResponse() {
-        adapter.clear();
+        showToast("No results");
     }
 
     private Calendar getNextMondayDate() {
@@ -169,6 +182,10 @@ public class TimeTableActivity extends AppCompatActivity {
         thisDay = currentTime.get(Calendar.DAY_OF_MONTH);
         weekDate = weekDate+" - " +thisDay+"."+thisMonth;
         return weekDate;
+    }
+
+    private void showToast(String toast) {
+        Toast.makeText(this, toast, Toast.LENGTH_LONG).show();
     }
 
 }

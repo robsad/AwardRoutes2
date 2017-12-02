@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
             holder.airportName = (TextView) convertView.findViewById(R.id.airportCity);
             holder.airportCountry = (TextView) convertView.findViewById(R.id.airportCountry);
             holder.airlineLeg = (TextView) convertView.findViewById(R.id.airline);
+            holder.arrow_right = (ImageView) convertView.findViewById(R.id.arrow_right);
+            holder.relativeclic =(RelativeLayout)convertView.findViewById(R.id.airline_button);
             convertView.setTag(holder);
         }
         else {
@@ -88,8 +92,9 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
         if (airline.equals("")) {
             holder.airlineLeg.setText("Flight " + pos);
         } else {
-            holder.airlineLeg.setText("Flight " + pos + ": " + airline + " (timatable ->)");
-            holder.airlineLeg.setOnClickListener(new View.OnClickListener() {
+            holder.airlineLeg.setText("Flight " + pos + ": " + airline);
+            holder.arrow_right.setVisibility(View.VISIBLE);
+            holder.relativeclic.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     View parentRow = (View) v.getParent();
                     ListView listView = (ListView) parentRow.getParent();
@@ -114,5 +119,7 @@ public class CustomMainListAdapter extends ArrayAdapter<FormAirportData> {
         TextView airportName;
         TextView airportCountry;
         TextView airlineLeg;
+        ImageView arrow_right;
+        RelativeLayout relativeclic;
     }
 }
